@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NVDA,258.99999618530273,2023-04-14,-1080,NVDA230414C00260000,260.0,258.99999618530273,14.17,16.2,17.89,13.52,302,166,,2023-03-20,25,258.99999618530273,14.17,last,entry_snapshot

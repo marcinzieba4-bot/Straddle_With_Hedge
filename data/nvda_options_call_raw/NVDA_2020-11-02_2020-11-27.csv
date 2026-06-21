@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NVDA,503.23001861572266,2020-11-27,-1948,NVDA201127C00502500,502.5,503.23001861572266,27.95,30.9,30.9,25.72,5,2,,2020-11-02,25,503.23001861572266,27.95,last,entry_snapshot
