@@ -12,10 +12,8 @@ Rules
 - Renko signal (ATR-based brick size, computed from close-to-close ranges)
   is evaluated daily. On the initiation day, open 1 unit of future: long if
   Renko is up, short if Renko is down.
-- During the month, a flip in the Renko signal alone is ignored.
-- The hedge only flips when BOTH conditions hold:
-    long  -> short: price < neutral (the strike) AND Renko is down
-    short -> long : price > neutral (the strike) AND Renko is up
+- During the month, the hedge flips whenever the Renko signal flips
+  (long <-> short), regardless of where price sits relative to the strike.
 - At month end, options are cash-settled against intrinsic value, and any
   open hedge leg is closed at the settlement price.
 """
@@ -130,16 +128,12 @@ def run_backtest(dates, closes, signal):
         for i in idxs[1:]:
             price = closes[i]
             sig = signal[i]
-            if hedge_dir == 1 and price < strike and sig == -1:
+            if sig != hedge_dir:
                 hedge_pnl += hedge_dir * (price - hedge_entry)
-                hedge_dir = -1
+                label = "long->short" if hedge_dir == 1 else "short->long"
+                hedge_dir = sig
                 hedge_entry = price
-                switches.append((dates[i], "long->short", price))
-            elif hedge_dir == -1 and price > strike and sig == 1:
-                hedge_pnl += hedge_dir * (price - hedge_entry)
-                hedge_dir = 1
-                hedge_entry = price
-                switches.append((dates[i], "short->long", price))
+                switches.append((dates[i], label, price))
 
         settle = closes[idxs[-1]]
         hedge_pnl += hedge_dir * (settle - hedge_entry)
