@@ -1,4 +1,4 @@
-# Straddle With Hedge — ETHUSD / BTCUSD / SPY / CAT / SHW backtest
+# Straddle With Hedge — ETHUSD / BTCUSD / SPY / CAT / SHW / TSLA backtest
 
 Monthly ATM short straddle (call + put), hedged with 1 unit of the
 underlying future whose side (long/short) is driven by a daily Renko
@@ -32,6 +32,7 @@ Daily closes pulled from Yahoo Finance's chart API, covering 2023-01-01 to
 - `data/spy_daily.csv` — SPY
 - `data/cat_daily.csv` — CAT
 - `data/shw_daily.csv` — SHW
+- `data/tsla_daily.csv` — TSLA
 
 ## Running
 
@@ -42,6 +43,7 @@ python3 backtest.py --data data/btc_usd_daily.csv --premium-rate 0.05 --strike-s
 python3 backtest.py --data data/spy_daily.csv --premium-rate 0.0166 --strike-step 1 --asset SPY --out-csv results_spy.csv --out-png equity_curve_spy.png
 python3 backtest.py --data data/cat_daily.csv --premium-rate 0.0464 --strike-step 5 --asset CAT --out-csv results_cat.csv --out-png equity_curve_cat.png
 python3 backtest.py --data data/shw_daily.csv --premium-rate 0.025 --strike-step 5 --asset SHW --out-csv results_shw.csv --out-png equity_curve_shw.png
+python3 backtest.py --data data/tsla_daily.csv --premium-rate 0.05 --strike-step 5 --asset TSLA --out-csv results_tsla.csv --out-png equity_curve_tsla.png
 ```
 
 Outputs a `--out-csv` (per-month P&L breakdown) and `--out-png`
@@ -68,6 +70,10 @@ Outputs a `--out-csv` (per-month P&L breakdown) and `--out-png`
 **SHW** (2.5% premium per side, $5 strike step)
 - 24/42 winning months
 - Total P&L: ~$42.7 (~0.41% of spot per month on average)
+
+**TSLA** (5% premium per side, $5 strike step)
+- 30/42 winning months
+- Total P&L: ~$204.8 (~3.04% of spot per month on average)
 
 This is a simplified, fixed-premium model (not real options market prices)
 intended to illustrate the hedge-switching mechanics, not as a production
