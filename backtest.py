@@ -131,7 +131,7 @@ def monthly_groups(dates):
     return [groups[k] for k in sorted(groups)]
 
 
-def run_backtest(dates, closes, signal):
+def run_backtest(dates, closes, signal, premium_rate=PREMIUM_RATE, strike_step=STRIKE_STEP):
     months = monthly_groups(dates)
     results = []
     equity = 0.0
@@ -143,10 +143,10 @@ def run_backtest(dates, closes, signal):
 
         i0 = idxs[0]
         spot0 = closes[i0]
-        strike = nearest_strike(spot0)
+        strike = nearest_strike(spot0, strike_step)
 
-        premium_call = PREMIUM_RATE * spot0 + max(0.0, spot0 - strike)
-        premium_put = PREMIUM_RATE * spot0 + max(0.0, strike - spot0)
+        premium_call = premium_rate * spot0 + max(0.0, spot0 - strike)
+        premium_put = premium_rate * spot0 + max(0.0, strike - spot0)
         premium_income = premium_call + premium_put
 
         hedge_dir = signal[i0]            # +1 long, -1 short
@@ -219,13 +219,13 @@ def print_report(results):
         print(f"Avg monthly P&L %: {avg / results[0]['spot0'] * 100:.2f}% of initial spot")
 
 
-def plot_equity(results, path):
+def plot_equity(results, path, asset="ETHUSD"):
     xs = [r["expiry_date"] for r in results]
     ys = [r["equity"] for r in results]
     plt.figure(figsize=(10, 5))
     plt.plot(xs, ys, marker="o")
     plt.axhline(0, color="grey", linewidth=0.8)
-    plt.title("Equity curve: ATM short straddle + Renko-hedged future (ETHUSD)")
+    plt.title(f"Equity curve: ATM short straddle + Renko-hedged future ({asset})")
     plt.xlabel("Month")
     plt.ylabel("Cumulative P&L ($, 1 unit notional)")
     plt.grid(True, linewidth=0.3)
@@ -234,13 +234,24 @@ def plot_equity(results, path):
 
 
 def main():
-    dates, closes = load_prices("data/eth_usd_daily.csv")
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", default="data/eth_usd_daily.csv")
+    parser.add_argument("--premium-rate", type=float, default=PREMIUM_RATE)
+    parser.add_argument("--strike-step", type=float, default=STRIKE_STEP)
+    parser.add_argument("--asset", default="ETHUSD")
+    parser.add_argument("--out-csv", default="results.csv")
+    parser.add_argument("--out-png", default="equity_curve.png")
+    args = parser.parse_args()
+
+    dates, closes = load_prices(args.data)
     atr = compute_atr_proxy(closes, ATR_LEN)
     signal = compute_renko_signal(dates, closes, atr)
-    results = run_backtest(dates, closes, signal)
+    results = run_backtest(dates, closes, signal, args.premium_rate, args.strike_step)
     print_report(results)
 
-    with open("results.csv", "w", newline="") as f:
+    with open(args.out_csv, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["month", "init_date", "expiry_date", "spot0", "strike", "settle",
                     "premium_income", "option_pnl", "hedge_pnl", "n_switches",
@@ -250,7 +261,7 @@ def main():
                         r["strike"], r["settle"], r["premium_income"], r["option_pnl"],
                         r["hedge_pnl"], r["n_switches"], r["month_pnl"], r["equity"]])
 
-    plot_equity(results, "equity_curve.png")
+    plot_equity(results, args.out_png, args.asset)
 
 
 if __name__ == "__main__":
