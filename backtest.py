@@ -12,12 +12,12 @@ Rules
 - Renko signal (ATR-based brick size, computed from close-to-close ranges)
   is evaluated daily. On the initiation day, open 1 unit of future: long if
   Renko is up, short if Renko is down.
-- During the month, the hedge flips whenever the Renko signal flips
-  (long <-> short), regardless of where price sits relative to the strike.
+- During the month, a Renko flip alone is ignored. The hedge only flips when
+  BOTH hold: price crosses the strike (neutral point) AND Renko agrees with
+  the new direction (long->short needs price < strike and Renko down;
+  short->long needs price > strike and Renko up).
 - At month end, options are cash-settled against intrinsic value, and any
   open hedge leg is closed at the settlement price.
-- Additionally, each month sell a far OTM call struck 15% above spot for a
-  fixed premium of 4% of spot (income, cash-settled at expiry).
 """
 import datetime
 import csv
@@ -30,8 +30,6 @@ import matplotlib.pyplot as plt
 PREMIUM_RATE = 0.068      # 6.8% per side, fixed
 STRIKE_STEP = 50          # ETH strikes quoted in $50 increments (Deribit-like)
 ATR_LEN = 14
-TAIL_CALL_OTM = 0.15      # tail call struck 15% above spot
-TAIL_CALL_PREMIUM_RATE = 0.04  # fixed income, 4% of spot
 
 
 def load_prices(path):
@@ -124,9 +122,6 @@ def run_backtest(dates, closes, signal):
         premium_put = PREMIUM_RATE * spot0 + max(0.0, strike - spot0)
         premium_income = premium_call + premium_put
 
-        tail_call_strike = nearest_strike(spot0 * (1 + TAIL_CALL_OTM))
-        tail_call_income = TAIL_CALL_PREMIUM_RATE * spot0
-
         hedge_dir = signal[i0]            # +1 long, -1 short
         hedge_entry = spot0
         hedge_pnl = 0.0
@@ -135,12 +130,16 @@ def run_backtest(dates, closes, signal):
         for i in idxs[1:]:
             price = closes[i]
             sig = signal[i]
-            if sig != hedge_dir:
+            if hedge_dir == 1 and price < strike and sig == -1:
                 hedge_pnl += hedge_dir * (price - hedge_entry)
-                label = "long->short" if hedge_dir == 1 else "short->long"
-                hedge_dir = sig
+                hedge_dir = -1
                 hedge_entry = price
-                switches.append((dates[i], label, price))
+                switches.append((dates[i], "long->short", price))
+            elif hedge_dir == -1 and price > strike and sig == 1:
+                hedge_pnl += hedge_dir * (price - hedge_entry)
+                hedge_dir = 1
+                hedge_entry = price
+                switches.append((dates[i], "short->long", price))
 
         settle = closes[idxs[-1]]
         hedge_pnl += hedge_dir * (settle - hedge_entry)
@@ -149,10 +148,7 @@ def run_backtest(dates, closes, signal):
         put_payoff = -max(0.0, strike - settle)
         option_pnl = premium_income + call_payoff + put_payoff
 
-        tail_call_payoff = -max(0.0, settle - tail_call_strike)
-        tail_call_pnl = tail_call_income + tail_call_payoff
-
-        month_pnl = option_pnl + hedge_pnl + tail_call_pnl
+        month_pnl = option_pnl + hedge_pnl
         equity += month_pnl
 
         results.append({
@@ -167,8 +163,6 @@ def run_backtest(dates, closes, signal):
             "hedge_pnl": hedge_pnl,
             "n_switches": len(switches),
             "switches": switches,
-            "tail_call_strike": tail_call_strike,
-            "tail_call_pnl": tail_call_pnl,
             "month_pnl": month_pnl,
             "equity": equity,
         })
@@ -179,11 +173,11 @@ def run_backtest(dates, closes, signal):
 def print_report(results):
     print(f"{'Month':8} {'Spot0':>9} {'Strike':>7} {'Settle':>9} "
           f"{'Premium':>9} {'OptPnL':>9} {'HedgePnL':>9} {'Switch':>6} "
-          f"{'TailCall':>9} {'MonthPnL':>10} {'Equity':>10}")
+          f"{'MonthPnL':>10} {'Equity':>10}")
     for r in results:
         print(f"{r['month']:8} {r['spot0']:9.1f} {r['strike']:7.0f} {r['settle']:9.1f} "
               f"{r['premium_income']:9.1f} {r['option_pnl']:9.1f} {r['hedge_pnl']:9.1f} "
-              f"{r['n_switches']:6d} {r['tail_call_pnl']:9.1f} {r['month_pnl']:10.1f} {r['equity']:10.1f}")
+              f"{r['n_switches']:6d} {r['month_pnl']:10.1f} {r['equity']:10.1f}")
 
     total_pnl = results[-1]["equity"] if results else 0.0
     n = len(results)
@@ -204,7 +198,7 @@ def plot_equity(results, path):
     plt.figure(figsize=(10, 5))
     plt.plot(xs, ys, marker="o")
     plt.axhline(0, color="grey", linewidth=0.8)
-    plt.title("Equity curve: ATM short straddle + Renko hedge + tail call (ETHUSD)")
+    plt.title("Equity curve: ATM short straddle + Renko-hedged future (ETHUSD)")
     plt.xlabel("Month")
     plt.ylabel("Cumulative P&L ($, 1 unit notional)")
     plt.grid(True, linewidth=0.3)
@@ -223,12 +217,11 @@ def main():
         w = csv.writer(f)
         w.writerow(["month", "init_date", "expiry_date", "spot0", "strike", "settle",
                     "premium_income", "option_pnl", "hedge_pnl", "n_switches",
-                    "tail_call_strike", "tail_call_pnl", "month_pnl", "equity"])
+                    "month_pnl", "equity"])
         for r in results:
             w.writerow([r["month"], r["init_date"], r["expiry_date"], r["spot0"],
                         r["strike"], r["settle"], r["premium_income"], r["option_pnl"],
-                        r["hedge_pnl"], r["n_switches"], r["tail_call_strike"],
-                        r["tail_call_pnl"], r["month_pnl"], r["equity"]])
+                        r["hedge_pnl"], r["n_switches"], r["month_pnl"], r["equity"]])
 
     plot_equity(results, "equity_curve.png")
 
