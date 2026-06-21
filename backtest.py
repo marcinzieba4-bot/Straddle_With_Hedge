@@ -9,9 +9,10 @@ Rules
   intrinsic moneyness created by rounding to the nearest strike (i.e. you are
   not selling exactly at spot, so the fixed premium is topped up/down by the
   strike/spot gap).
-- Renko signal (ATR-based brick size, computed from close-to-close ranges)
-  is evaluated daily. On the initiation day, open 1 unit of future: long if
-  Renko is up, short if Renko is down.
+- Renko signal ported from the "Universal Renko Bars by SiddWolf" Pine
+  indicator (ATR Based method, multiplier 0.15, tick_trend=2,
+  tick_reversal=4, open_offset=0), evaluated once per daily close. On the
+  initiation day, open 1 unit of future: long if Renko is up, short if down.
 - During the month, a Renko flip alone is ignored. The hedge only flips when
   BOTH hold: price crosses the strike (neutral point) AND Renko agrees with
   the new direction (long->short needs price < strike and Renko down;
@@ -30,6 +31,10 @@ import matplotlib.pyplot as plt
 PREMIUM_RATE = 0.068      # 6.8% per side, fixed
 STRIKE_STEP = 50          # ETH strikes quoted in $50 increments (Deribit-like)
 ATR_LEN = 14
+RENKO_ATR_MULT = 0.15     # "ATR 14 Multiplier" default from the Pine indicator
+RENKO_TICK_TREND = 2      # ticks needed to continue the trend
+RENKO_TICK_REVERSAL = 4   # ticks needed to reverse the trend
+RENKO_OPEN_OFFSET = 0
 
 
 def load_prices(path):
@@ -43,51 +48,73 @@ def load_prices(path):
 
 
 def compute_atr_proxy(closes, length=ATR_LEN):
-    """True-range proxy from close-only data: |close[t]-close[t-1]|."""
+    """
+    True-range proxy from close-only data: |close[t]-close[t-1]|, smoothed
+    with Wilder's RMA (matching Pine's ta.atr) since real OHLC isn't
+    available from the daily close-only price feed used here.
+    """
     tr = [None] + [abs(closes[i] - closes[i - 1]) for i in range(1, len(closes))]
     atr = [None] * len(closes)
-    for i in range(length, len(closes)):
-        window = tr[i - length + 1:i + 1]
-        atr[i] = sum(window) / length
+    seed_idx = length  # first index with `length` TR values (tr[1..length])
+    if seed_idx >= len(closes):
+        return atr
+    atr[seed_idx] = sum(tr[1:seed_idx + 1]) / length
+    for i in range(seed_idx + 1, len(closes)):
+        atr[i] = (atr[i - 1] * (length - 1) + tr[i]) / length
     return atr
 
 
-def compute_renko_signal(dates, closes, atr):
+def get_tick_size(price_ref, atr_value, atr_multiplier=RENKO_ATR_MULT):
+    """Port of getEffectiveTickSize() for the 'ATR Based' method."""
+    if atr_value is None:
+        return price_ref * 0.001
+    return atr_value * atr_multiplier
+
+
+def compute_renko_signal(dates, closes, atr, tick_trend=RENKO_TICK_TREND,
+                          tick_reversal=RENKO_TICK_REVERSAL, open_offset=RENKO_OPEN_OFFSET):
     """
-    Daily Renko direction using an ATR-based brick size that is re-evaluated
-    each time a new brick forms. Returns a list of +1/-1/None (None during
-    ATR warm-up).
+    Port of the "Universal Renko Bars" Pine indicator (ATR Based method),
+    evaluated once per daily close (equivalent to one bar in Pine). A new
+    brick confirms when close crosses bar_max (continuation/reversal up) or
+    bar_min (continuation/reversal down); the brick closes exactly at that
+    level (not at the raw price), same as the Pine script. Continuation
+    needs `tick_trend` ticks, reversal needs `tick_reversal` ticks (ticks are
+    asymmetric, as in the original script's defaults of 2 / 4).
+
+    Returns a list of +1/-1/None (None until the first brick confirms).
     """
-    signal = [None] * len(closes)
-    direction = None
-    ref = None
-    start = next(i for i, a in enumerate(atr) if a is not None)
-    ref = closes[start]
-    for i in range(start, len(closes)):
-        brick = atr[i]
-        if brick is None or brick <= 0:
-            signal[i] = direction
-            continue
-        if direction is None:
-            if closes[i] - ref >= brick:
-                direction = 1
-                ref = ref + brick * math.floor((closes[i] - ref) / brick)
-            elif ref - closes[i] >= brick:
-                direction = -1
-                ref = ref - brick * math.floor((ref - closes[i]) / brick)
-        elif direction == 1:
-            if closes[i] - ref >= brick:
-                ref = ref + brick * math.floor((closes[i] - ref) / brick)
-            elif ref - closes[i] >= brick:
-                direction = -1
-                ref = ref - brick * math.floor((ref - closes[i]) / brick)
-        else:
-            if ref - closes[i] >= brick:
-                ref = ref - brick * math.floor((ref - closes[i]) / brick)
-            elif closes[i] - ref >= brick:
-                direction = 1
-                ref = ref + brick * math.floor((closes[i] - ref) / brick)
-        signal[i] = direction
+    n = len(closes)
+    signal = [None] * n
+    start = next((i for i, a in enumerate(atr) if a is not None), None)
+    if start is None:
+        return signal
+
+    tick0 = get_tick_size(closes[start], atr[start])
+    bar_open = closes[start]
+    bar_direction = 0
+    bar_max = bar_open + tick_trend * tick0
+    bar_min = bar_open - tick_trend * tick0
+
+    for i in range(start + 1, n):
+        price = closes[i]
+        max_exceeded = price > bar_max
+        min_exceeded = price < bar_min
+
+        if max_exceeded or min_exceeded:
+            bar_direction = 1 if max_exceeded else -1
+            this_close = bar_max if max_exceeded else bar_min
+            current_tick = get_tick_size(this_close, atr[i])
+            bar_open = this_close - open_offset * current_tick * bar_direction
+            if bar_direction > 0:
+                bar_max = this_close + tick_trend * current_tick
+                bar_min = this_close - tick_reversal * current_tick
+            else:
+                bar_max = this_close + tick_reversal * current_tick
+                bar_min = this_close - tick_trend * current_tick
+
+        signal[i] = bar_direction if bar_direction != 0 else None
+
     return signal
 
 
