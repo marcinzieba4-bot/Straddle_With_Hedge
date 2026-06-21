@@ -149,13 +149,13 @@ def print_report(results):
     print(f"Avg real premium rate   : {sum(r['premium_pct'] for r in results)/n:.2f}% per leg")
 
 
-def plot_equity(results, path):
+def plot_equity(results, path, asset="NVDA"):
     xs = [r["expiry_date"] for r in results]
     ys = [r["equity"] for r in results]
     plt.figure(figsize=(11, 5))
     plt.plot(xs, ys, marker="o")
     plt.axhline(0, color="grey", linewidth=0.8)
-    plt.title("Equity curve: ATM short straddle + Renko-hedged future (NVDA, real option premiums)")
+    plt.title(f"Equity curve: ATM short straddle + Renko-hedged future ({asset}, real option premiums)")
     plt.xlabel("Period expiry")
     plt.ylabel("Cumulative P&L ($, 1 unit notional)")
     plt.grid(True, linewidth=0.3)
@@ -164,15 +164,25 @@ def plot_equity(results, path):
 
 
 def main():
-    dates, closes = load_prices("data/nvda_daily.csv")
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", default="data/nvda_daily.csv")
+    parser.add_argument("--options-history", default="data/nvda_options_raw/NVDA_history_summary.csv")
+    parser.add_argument("--asset", default="NVDA")
+    parser.add_argument("--out-csv", default="results_nvda_real.csv")
+    parser.add_argument("--out-png", default="equity_curve_nvda_real.png")
+    args = parser.parse_args()
+
+    dates, closes = load_prices(args.data)
     atr = compute_atr_proxy(closes, ATR_LEN)
     signal = compute_renko_signal(dates, closes, atr)
-    periods = load_option_periods("data/nvda_options_raw/NVDA_history_summary.csv")
+    periods = load_option_periods(args.options_history)
 
     results = run_real_backtest(dates, closes, signal, periods)
     print_report(results)
 
-    with open("results_nvda_real.csv", "w", newline="") as f:
+    with open(args.out_csv, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["period", "init_date", "expiry_date", "spot0", "strike", "premium_pct",
                     "settle", "premium_income", "option_pnl", "hedge_pnl", "n_switches",
@@ -182,7 +192,7 @@ def main():
                         r["premium_pct"], r["settle"], r["premium_income"], r["option_pnl"],
                         r["hedge_pnl"], r["n_switches"], r["period_pnl"], r["equity"]])
 
-    plot_equity(results, "equity_curve_nvda_real.png")
+    plot_equity(results, args.out_png, args.asset)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+HD,336.5799865722656,2025-12-19,-91,HD251219P00335000,335.0,336.5799865722656,8.25,7.5,8.3,6.5,136,465,,2025-11-24,25,336.5799865722656,8.25,last,entry_snapshot
