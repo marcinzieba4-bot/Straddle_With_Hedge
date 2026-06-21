@@ -14,6 +14,8 @@ ETH future whose side (long/short) is driven by a daily Renko signal.
   (long ↔ short), regardless of where price sits relative to the strike.
 - At expiry, options are cash-settled against intrinsic value and any open
   hedge leg is closed at the settlement price.
+- Additionally, each month sells a far OTM call struck 15% above spot for a
+  fixed premium of 4% of spot (extra income, capped upside).
 - The Renko signal uses an ATR(14)-based brick size, recomputed from
   close-to-close ranges (true OHLC ATR isn't available from the daily
   close-only price feed used here).
@@ -35,8 +37,8 @@ Outputs `results.csv` (per-month P&L breakdown) and `equity_curve.png`
 
 ## Result snapshot (42 months, 1 unit ETH notional)
 
-- 24/42 winning months
-- Total P&L: ~$2,435 (~3.83% of spot per month on average)
+- 27/42 winning months
+- Total P&L: ~$3,107 (~4.88% of spot per month on average)
 
 This is a simplified, fixed-premium model (not real options market prices)
 intended to illustrate the hedge-switching mechanics, not as a production
