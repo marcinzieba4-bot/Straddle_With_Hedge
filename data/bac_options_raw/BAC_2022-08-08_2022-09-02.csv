@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+BAC,33.4900016784668,2022-09-02,-1296,BAC220902P00033000,33.0,33.4900016784668,0.9,0.65,0.9,0.65,58,304,,2022-08-08,25,33.4900016784668,0.9,last,entry_snapshot

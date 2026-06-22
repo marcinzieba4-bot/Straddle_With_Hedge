@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+BX,54.290000915527344,2020-10-30,-1966,BX201030P00054000,54.0,54.290000915527344,2.05,2.05,2.05,2.05,,122,,2020-10-05,25,54.290000915527344,2.05,last,entry_snapshot

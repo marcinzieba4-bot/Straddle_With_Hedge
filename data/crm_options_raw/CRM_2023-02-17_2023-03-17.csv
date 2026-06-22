@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+CRM,165.1699981689453,2023-03-17,-1099,CRM230317P00165000,165.0,165.1699981689453,7.85,7.7,9.1,7.4,583,20130,,2023-02-17,28,165.1699981689453,7.85,last,entry_snapshot

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+AVGO,142.0800018310547,2024-08-30,-567,AVGO240830P00142000,142.0,142.0800018310547,9.4,11.5,11.5,7.3,104,73,,2024-08-05,25,142.0800018310547,9.4,last,entry_snapshot

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+CMCSA,35.75999963378906,2022-09-30,-1268,CMCSA220930P00036000,36.0,35.75999963378906,1.42,0.93,1.42,0.92,27,858,,2022-09-02,28,35.75999963378906,1.42,last,entry_snapshot

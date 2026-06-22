@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+CMCSA,43.12000155258178,2024-04-12,-708,CMCSA240412P00043000,43.0,43.12000155258178,1.06,1.06,1.06,1.06,1,16,,2024-03-18,25,43.12000155258178,1.06,last,entry_snapshot

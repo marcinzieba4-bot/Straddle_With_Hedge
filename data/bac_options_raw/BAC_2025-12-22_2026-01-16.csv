@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+BAC,55.880001068115234,2026-01-16,-64,BAC260116P00056000,56.0,55.880001068115234,1.44,1.61,1.61,1.37,197,,,2025-12-22,25,55.880001068115234,1.44,last,entry_snapshot

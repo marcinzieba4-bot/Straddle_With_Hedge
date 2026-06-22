@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+COST,1071.8499755859375,2025-03-14,-372,COST250314P01070000,1070.0,1071.8499755859375,27.25,26.8,27.7,25.78,337,8,,2025-02-14,28,1071.8499755859375,27.25,last,entry_snapshot

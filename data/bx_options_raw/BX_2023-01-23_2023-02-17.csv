@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+BX,87.83000183105469,2023-02-17,-1126,BX230217P00088000,88.0,87.83000183105469,4.65,4.7,4.8,4.18,36,,,2023-01-23,25,87.83000183105469,4.65,last,entry_snapshot

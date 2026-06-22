@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+BX,119.69999694824219,2024-07-05,-622,BX240705P00120000,120.0,119.6999969482422,3.65,3.65,3.65,3.65,1,124,,2024-06-10,25,119.69999694824219,3.65,last,entry_snapshot

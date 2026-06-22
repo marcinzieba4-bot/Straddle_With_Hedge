@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+AVGO,470.12001037597656,2022-11-25,-1211,AVGO221125P00470000,470.0,470.12001037597656,17.2,17.2,17.2,17.2,1,35,,2022-10-31,25,470.12001037597656,17.2,last,entry_snapshot
