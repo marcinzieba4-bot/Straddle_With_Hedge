@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+ABT,112.44000244140625,2024-04-12,-708,ABT240412P00112000,112.0,112.44000244140624,1.71,1.21,1.71,1.21,12,31,,2024-03-18,25,112.44000244140625,1.71,last,entry_snapshot

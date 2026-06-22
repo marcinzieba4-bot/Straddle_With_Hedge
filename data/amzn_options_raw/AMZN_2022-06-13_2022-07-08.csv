@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+AMZN,103.66999816894531,2022-07-08,-1351,AMZN220708P00103500,103.5,103.66999816894533,5.6,5.4,5.6,4.95,35,4,,2022-06-13,25,103.66999816894531,5.6,last,entry_snapshot

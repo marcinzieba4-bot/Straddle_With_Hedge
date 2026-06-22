@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+AMZN,3180.7400512695312,2021-03-19,-1827,AMZN210319P03180000,3180.0,3180.7400512695312,97.48,83.35,101.6,79.65,235,488,,2021-02-22,25,3180.7400512695312,97.48,last,entry_snapshot

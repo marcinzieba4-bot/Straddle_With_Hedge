@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+ADBE,376.92999267578125,2025-08-01,-231,ADBE250801P00375000,375.0,376.9299926757813,9,8.3,9.06,7.92,20,196,,2025-07-07,25,376.92999267578125,9.0,last,entry_snapshot

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+ABBV,136.27999877929688,2022-09-30,-1268,ABBV220930P00135000,135.0,136.27999877929688,2.99,2.07,3,1.94,22,117,,2022-09-02,28,136.27999877929688,2.99,last,entry_snapshot

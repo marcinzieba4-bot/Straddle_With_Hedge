@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+AMZN,3004.47998046875,2020-11-27,-1939,AMZN201127P03005000,3005.0,3004.47998046875,159.34,142.24,159.34,142.24,6,,,2020-11-02,25,3004.47998046875,159.34,last,entry_snapshot

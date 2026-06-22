@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+AAPL,129.7788848876953,2023-01-20,-1153,AAPL230120P00130000,130.0,3.98,4.4,5.1,3.75,9328,94339,,2022-12-26,25,129.7788848876953,3.98,last,entry_snapshot

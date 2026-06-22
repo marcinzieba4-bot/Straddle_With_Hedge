@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+AMZN,188.38999938964844,2024-11-22,-483,AMZN241122P00190000,190.0,188.38999938964844,8.55,8.1,8.55,8.05,180,646,,2024-10-28,25,188.38999938964844,8.55,last,entry_snapshot

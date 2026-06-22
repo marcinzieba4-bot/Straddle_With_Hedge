@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+ABT,97.87000274658203,2023-04-14,-1072,ABT230414P00098000,98.0,97.87000274658205,3.44,3.44,3.44,3.44,,563,,2023-03-20,25,97.87000274658203,3.44,last,entry_snapshot

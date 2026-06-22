@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+ACN,299.4700012207031,2024-08-02,-595,ACN240802P00300000,300.0,299.4700012207031,6.4,5.89,8.86,5.89,35,386,,2024-07-08,25,299.4700012207031,6.4,last,entry_snapshot

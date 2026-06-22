@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+AAPL,165.07000732421875,2022-05-13,-1406,AAPL220513P00165000,165.0,165.07000732421875,5.55,6.1,6.3,5.05,576,2520,,2022-04-18,25,165.07000732421875,5.55,last,entry_snapshot

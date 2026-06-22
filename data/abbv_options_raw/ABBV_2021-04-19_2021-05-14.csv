@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+ABBV,108.61000061035156,2021-05-14,-1772,ABBV210514P00109000,109.0,108.61000061035156,3.56,3.56,3.56,3.56,,20,,2021-04-19,25,108.61000061035156,3.56,last,entry_snapshot
