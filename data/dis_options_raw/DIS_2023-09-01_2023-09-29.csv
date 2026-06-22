@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+DIS,81.63999938964844,2023-09-29,-903,DIS230929P00082000,82.0,81.63999938964844,2.28,2.04,2.81,1.53,258,422,,2023-09-01,28,81.63999938964844,2.28,last,entry_snapshot

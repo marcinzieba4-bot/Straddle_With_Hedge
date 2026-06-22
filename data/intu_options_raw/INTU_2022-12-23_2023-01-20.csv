@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+INTU,384.489990234375,2023-01-20,-1157,INTU230120P00385000,385.0,384.489990234375,18.05,18.05,18.05,18.05,,102,,2022-12-23,28,384.489990234375,18.05,last,entry_snapshot

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+CVX,183.74000549316406,2026-03-13,-8,CVX260313P00185000,185.0,183.7400054931641,6.14,6.1,6.14,6.1,5,10,,2026-02-13,28,183.74000549316406,6.14,last,entry_snapshot

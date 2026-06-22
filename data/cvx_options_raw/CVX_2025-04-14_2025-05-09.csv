@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+CVX,135.32000732421875,2025-05-09,-316,CVX250509P00135000,135.0,135.32000732421875,4.71,2.94,5.8,2.94,22,200,,2025-04-14,25,135.32000732421875,4.71,last,entry_snapshot

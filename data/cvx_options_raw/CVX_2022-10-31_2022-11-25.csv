@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+CVX,180.89999389648438,2022-11-25,-1212,CVX221125P00180000,180.0,180.8999938964844,5.85,6.2,6.2,4.85,17,148,,2022-10-31,25,180.89999389648438,5.85,last,entry_snapshot

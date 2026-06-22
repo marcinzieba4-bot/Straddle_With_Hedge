@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+DIS,181.0,2021-10-01,-1631,DIS211001P00180000,180.0,181.0,3.6,3.5,4.15,3.3,478,431,,2021-09-03,28,181.0,3.6,last,entry_snapshot

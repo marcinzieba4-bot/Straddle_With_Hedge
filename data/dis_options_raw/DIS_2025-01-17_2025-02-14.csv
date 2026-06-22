@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+DIS,107.0199966430664,2025-02-14,-399,DIS250214P00107000,107.0,107.0199966430664,3.6,3.71,3.77,3.54,28,1829,,2025-01-17,28,107.0199966430664,3.6,last,entry_snapshot

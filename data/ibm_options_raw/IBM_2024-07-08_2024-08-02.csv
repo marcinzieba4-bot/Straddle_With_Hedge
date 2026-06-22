@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+IBM,177.63999938964844,2024-08-02,-597,IBM240802P00180000,180.0,177.63999938964844,7.05,7.05,7.05,7.05,2,5,,2024-07-08,25,177.63999938964844,7.05,last,entry_snapshot

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+CVX,72.1500015258789,2020-11-27,-1940,CVX201127P00072000,72.0,72.1500015258789,3.76,3.76,3.76,3.76,3,13,,2020-11-02,25,72.1500015258789,3.76,last,entry_snapshot

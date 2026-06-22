@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+CVX,104.72000122070312,2021-10-29,-1604,CVX211029P00105000,105.0,104.72000122070312,3.4,3.4,3.4,3.4,,73,,2021-10-04,25,104.72000122070312,3.4,last,entry_snapshot

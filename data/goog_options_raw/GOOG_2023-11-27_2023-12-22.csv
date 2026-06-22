@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+GOOG,138.0500030517578,2023-12-22,-819,GOOG231222P00138000,138.0,138.0500030517578,2.52,2.42,2.57,2.35,79,75,,2023-11-27,25,138.0500030517578,2.52,last,entry_snapshot
