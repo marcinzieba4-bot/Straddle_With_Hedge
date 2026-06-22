@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+JPM,130.69544982910156,2022-02-18,-1489,JPM220218P00130000,130.0,1.22,2.82,2.82,1.22,663,2456,,2022-01-24,25,130.69544982910156,1.22,last,entry_snapshot

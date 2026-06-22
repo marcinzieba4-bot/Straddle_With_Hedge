@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+MRK,84.43000372314454,2020-10-02,-1997,MRK201002P00084500,84.5,84.43000372314454,2.42,2.25,2.42,2.25,22,24,,2020-09-01,31,84.43000372314454,2.42,last,entry_snapshot

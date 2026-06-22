@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+KO,68.0999984741211,2024-08-30,-569,KO240830P00068000,68.0,68.0999984741211,1.44,0.9,1.44,0.9,72,328,,2024-08-05,25,68.0999984741211,1.44,last,entry_snapshot

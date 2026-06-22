@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+MA,526.5999755859375,2024-12-20,-456,MA241220P00527500,527.5,526.5999755859375,9.65,9.65,9.65,9.6,45,1,,2024-11-25,25,526.5999755859375,9.65,last,entry_snapshot

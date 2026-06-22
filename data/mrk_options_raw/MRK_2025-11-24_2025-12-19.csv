@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+MRK,100.4000015258789,2025-12-19,-93,MRK251219P00100000,100.0,100.4000015258789,2.68,2.94,2.94,2.14,1216,1239,,2025-11-24,25,100.4000015258789,2.68,last,entry_snapshot

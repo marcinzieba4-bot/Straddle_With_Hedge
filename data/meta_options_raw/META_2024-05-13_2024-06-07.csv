@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+META,468.010009765625,2024-06-07,-651,META240607P00470000,470.0,468.010009765625,14.25,11.7,16.6,11.7,69,123,,2024-05-13,25,468.010009765625,14.25,last,entry_snapshot

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+JPM,86.59364318847656,2020-10-30,-1965,JPM201030P00086500,86.5,0.51,0.58,0.58,0.49,12,47,,2020-10-05,25,86.59364318847656,0.51,last,entry_snapshot

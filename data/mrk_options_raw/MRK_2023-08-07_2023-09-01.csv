@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+MRK,106.08999633789062,2023-09-01,-933,MRK230901P00106000,106.0,106.08999633789062,2.11,2.11,2.11,2.11,1,80,,2023-08-07,25,106.08999633789062,2.11,last,entry_snapshot

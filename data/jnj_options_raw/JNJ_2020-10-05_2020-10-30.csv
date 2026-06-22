@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+JNJ,148.22999572753906,2020-10-30,-1968,JNJ201030P00148000,148.0,148.22999572753906,3.4,3.77,3.77,3.4,29,88,,2020-10-05,25,148.22999572753906,3.4,last,entry_snapshot

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+META,620.25,2026-02-13,-35,META260213P00620000,620.0,620.25,25.9,25.35,25.9,22.87,64,207,,2026-01-16,28,620.25,25.9,last,entry_snapshot

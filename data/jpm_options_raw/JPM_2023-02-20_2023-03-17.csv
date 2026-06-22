@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+JPM,132.48312377929688,2023-03-17,-1097,JPM230317P00130000,130.0,0.47,0.67,0.78,0.47,2689,17723,,2023-02-20,25,132.48312377929688,0.47,last,entry_snapshot

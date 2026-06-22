@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+KO,60.22999954223633,2023-02-17,-1129,KO230217P00060000,60.0,60.22999954223633,1.03,1.09,1.15,0.84,2110,19309,,2023-01-23,25,60.22999954223633,1.03,last,entry_snapshot

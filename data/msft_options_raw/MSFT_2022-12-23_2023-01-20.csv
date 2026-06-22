@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+MSFT,238.72999572753906,2023-01-20,-1154,MSFT230120P00237500,237.5,238.72999572753903,7.08,8.35,9.5,7.08,490,819,,2022-12-23,28,238.72999572753906,7.08,last,entry_snapshot

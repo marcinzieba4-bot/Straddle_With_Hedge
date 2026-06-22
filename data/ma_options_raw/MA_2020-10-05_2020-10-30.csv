@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+MA,343.25,2020-10-30,-1968,MA201030P00342500,342.5,343.25,12.3,12.3,12.3,12.3,3,19,,2020-10-05,25,343.25,12.3,last,entry_snapshot

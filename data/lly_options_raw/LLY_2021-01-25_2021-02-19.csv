@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+LLY,201.17990112304688,2021-02-19,-1853,LLY210219P00200000,200.0,3.04,4.35,4.35,3.04,174,224,,2021-01-25,25,201.17990112304688,3.04,last,entry_snapshot

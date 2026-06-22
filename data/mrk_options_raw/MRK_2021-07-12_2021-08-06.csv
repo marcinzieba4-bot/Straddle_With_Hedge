@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+MRK,77.55000305175781,2021-08-06,-1689,MRK210806P00077500,77.5,77.55000305175781,1.5,1.5,1.5,1.5,,14,,2021-07-12,25,77.55000305175781,1.5,last,entry_snapshot

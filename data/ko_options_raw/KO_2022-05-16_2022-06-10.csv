@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+KO,65.95999908447266,2022-06-10,-1381,KO220610P00066000,66.0,65.95999908447266,1.51,1.71,1.71,1.33,628,4202,,2022-05-16,25,65.95999908447266,1.51,last,entry_snapshot

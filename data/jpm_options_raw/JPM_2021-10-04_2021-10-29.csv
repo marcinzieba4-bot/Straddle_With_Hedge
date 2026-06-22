@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+JPM,148.7387237548828,2021-10-29,-1601,JPM211029P00150000,150.0,1,1.41,1.41,0.93,,320,,2021-10-04,25,148.7387237548828,1.0,last,entry_snapshot

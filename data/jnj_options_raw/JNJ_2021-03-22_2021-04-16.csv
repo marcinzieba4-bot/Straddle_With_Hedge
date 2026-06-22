@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+JNJ,160.5,2021-04-16,-1800,JNJ210416P00160000,160.0,160.5,2.38,3.82,3.82,2.38,358,6721,,2021-03-22,25,160.5,2.38,last,entry_snapshot

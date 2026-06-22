@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+MA,319.739990234375,2022-07-08,-1352,MA220708P00320000,320.0,319.739990234375,13.03,11.84,13.03,10.3,3,111,,2022-06-13,25,319.739990234375,13.03,last,entry_snapshot
