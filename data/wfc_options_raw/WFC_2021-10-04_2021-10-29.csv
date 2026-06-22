@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+WFC,47.02000045776367,2021-10-29,-1605,WFC211029P00047000,47.0,47.02000045776367,1.73,1.73,1.73,1.73,,378,,2021-10-04,25,47.02000045776367,1.73,last,entry_snapshot

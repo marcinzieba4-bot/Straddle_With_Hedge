@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+XOM,26.748126983642578,2020-10-30,-1965,XOM201030P00028000,28.0,0.22,0.26,0.26,0.22,6,354,,2020-10-05,25,26.748126983642578,0.22,last,entry_snapshot

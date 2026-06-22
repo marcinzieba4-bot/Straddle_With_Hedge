@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+XOM,75.38915252685547,2022-08-05,-1321,XOM220805P00075000,75.0,0.83,1.04,1.04,0.83,2,177,,2022-07-11,25,75.38915252685547,0.83,last,entry_snapshot

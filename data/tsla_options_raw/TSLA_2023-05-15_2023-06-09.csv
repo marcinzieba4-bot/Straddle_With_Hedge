@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+TSLA,166.35000610351562,2023-06-09,-1013,TSLA230609P00165000,165.0,7.45,7.3,8.33,6.3,559,668,,2023-05-15,25,166.35000610351562,7.45,last,entry_snapshot

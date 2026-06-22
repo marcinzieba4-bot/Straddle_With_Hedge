@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+TSLA,475.0500183105469,2020-10-02,-1993,TSLA201002P00475000,475.0,68.6,57.5,69.4,54.96,224,59,,2020-09-01,31,475.0500183105469,68.6,last,entry_snapshot

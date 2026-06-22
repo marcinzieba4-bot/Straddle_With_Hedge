@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+V,200.7991485595703,2021-03-19,-1826,V210319P00200000,200.0,2.29,3.94,3.96,2.15,183,,,2021-02-22,25,200.7991485595703,2.29,last,entry_snapshot

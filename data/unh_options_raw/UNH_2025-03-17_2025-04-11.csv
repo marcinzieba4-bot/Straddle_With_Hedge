@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+UNH,499.0199890136719,2025-04-11,-343,UNH250411P00500000,500.0,499.0199890136719,16.4,16.4,16.4,16.4,1,9,,2025-03-17,25,499.0199890136719,16.4,last,entry_snapshot

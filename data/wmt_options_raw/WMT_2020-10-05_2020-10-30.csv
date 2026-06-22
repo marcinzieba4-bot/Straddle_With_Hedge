@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+WMT,141.79999923706055,2020-10-30,-1967,WMT201030P00142000,142.0,141.79999923706055,3.85,4.2,4.2,3.71,4,66,,2020-10-05,25,141.79999923706055,3.85,last,entry_snapshot

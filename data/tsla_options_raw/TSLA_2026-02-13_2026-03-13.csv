@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+TSLA,417.44000244140625,2026-03-13,-7,TSLA260313P00415000,415.0,417.4400024414063,17.85,19.9,21.73,14.7,233,319,,2026-02-13,28,417.44000244140625,17.85,last,entry_snapshot

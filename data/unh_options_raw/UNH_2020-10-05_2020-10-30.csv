@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+UNH,318.1499938964844,2020-10-30,-1967,UNH201030P00317500,317.5,318.1499938964844,10,11.2,11.2,9.9,5,2,,2020-10-05,25,318.1499938964844,10.0,last,entry_snapshot

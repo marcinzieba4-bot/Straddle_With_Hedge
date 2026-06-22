@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+XOM,101.91000366210938,2024-01-19,-791,XOM240119P00102000,102.0,101.91000366210938,2.34,2.09,2.34,2.01,859,1243,,2023-12-22,28,101.91000366210938,2.34,last,entry_snapshot

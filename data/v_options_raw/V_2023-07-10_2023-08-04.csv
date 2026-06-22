@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+V,233.2673797607422,2023-08-04,-958,V230804P00235000,235.0,3.75,3.65,3.75,3.65,2,112,,2023-07-10,25,233.2673797607422,3.75,last,entry_snapshot

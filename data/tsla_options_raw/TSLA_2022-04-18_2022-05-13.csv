@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+TSLA,1004.2900085449219,2022-05-13,-1405,TSLA220513P01005000,1005.0,61,73.68,73.68,58,12,62,,2022-04-18,25,1004.2900085449219,61.0,last,entry_snapshot

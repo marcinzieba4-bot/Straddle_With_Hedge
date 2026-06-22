@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+WFC,49.18000030517578,2024-01-19,-793,WFC240119P00049000,49.0,49.18000030517578,1.21,1.06,1.21,1.01,120,1718,,2023-12-22,28,49.18000030517578,1.21,last,entry_snapshot

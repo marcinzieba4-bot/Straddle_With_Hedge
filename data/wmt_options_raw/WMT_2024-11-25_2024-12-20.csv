@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+WMT,89.5,2024-12-20,-455,WMT241220P00089000,89.0,89.5,1.56,1.1,1.67,1.09,286,493,,2024-11-25,25,89.5,1.56,last,entry_snapshot
