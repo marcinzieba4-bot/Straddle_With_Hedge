@@ -79,7 +79,8 @@ def premium_pct_from_move(move_value, duration=DURATION, dte_years=1 / 12, premi
     return premium_factor * price_vol_annual * math.sqrt(dte_years)
 
 
-def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP, premium_factor=0.4):
+def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP, premium_factor=0.4,
+                  txn_cost_pct=0.0):
     months = monthly_groups(dates)
     results = []
     equity = 0.0
@@ -101,6 +102,7 @@ def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP, premium_
         hedge_dir = signal[i0]
         hedge_entry = spot0
         hedge_pnl = 0.0
+        txn_cost = 0.0
         switches = []
 
         for i in idxs[1:]:
@@ -108,17 +110,20 @@ def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP, premium_
             sig = signal[i]
             if hedge_dir == 1 and price < strike and sig == -1:
                 hedge_pnl += hedge_dir * (price - hedge_entry)
+                txn_cost += txn_cost_pct * price
                 hedge_dir = -1
                 hedge_entry = price
                 switches.append((dates[i], "long->short", price))
             elif hedge_dir == -1 and price > strike and sig == 1:
                 hedge_pnl += hedge_dir * (price - hedge_entry)
+                txn_cost += txn_cost_pct * price
                 hedge_dir = 1
                 hedge_entry = price
                 switches.append((dates[i], "short->long", price))
 
         settle = prices[idxs[-1]]
         hedge_pnl += hedge_dir * (settle - hedge_entry)
+        hedge_pnl -= txn_cost
 
         call_payoff = -max(0.0, settle - strike)
         put_payoff = -max(0.0, strike - settle)
@@ -139,6 +144,7 @@ def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP, premium_
             "premium_income": premium_income,
             "option_pnl": option_pnl,
             "hedge_pnl": hedge_pnl,
+            "txn_cost": txn_cost,
             "n_switches": len(switches),
             "month_pnl": month_pnl,
             "equity": equity,
@@ -149,12 +155,12 @@ def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP, premium_
 
 def print_report(results):
     print(f"{'Month':8} {'Spot0':>8} {'Strike':>7} {'MOVE':>6} {'Prem%':>6} {'Settle':>8} "
-          f"{'Premium':>8} {'OptPnL':>8} {'HedgePnL':>9} {'Sw':>3} "
+          f"{'Premium':>8} {'OptPnL':>8} {'HedgePnL':>9} {'TxnCost':>7} {'Sw':>3} "
           f"{'MonthPnL':>9} {'Equity':>9}")
     for r in results:
         print(f"{r['month']:8} {r['spot0']:8.2f} {r['strike']:7.1f} {r['move0']:6.1f} {r['premium_pct']:6.2f} "
               f"{r['settle']:8.2f} {r['premium_income']:8.3f} {r['option_pnl']:8.3f} "
-              f"{r['hedge_pnl']:9.3f} {r['n_switches']:3d} {r['month_pnl']:9.3f} {r['equity']:9.3f}")
+              f"{r['hedge_pnl']:9.3f} {r['txn_cost']:7.4f} {r['n_switches']:3d} {r['month_pnl']:9.3f} {r['equity']:9.3f}")
 
     n = len(results)
     if n == 0:
@@ -172,6 +178,7 @@ def print_report(results):
     print(f"Avg monthly P&L (% spot): {avg_pct:.2f}%")
     print(f"Avg premium rate        : {sum(r['premium_pct'] for r in results)/n:.2f}% per leg")
     print(f"Avg MOVE level          : {sum(r['move0'] for r in results)/n:.1f}")
+    print(f"Total txn cost (pts)    : {sum(r['txn_cost'] for r in results):.3f}")
 
 
 def plot_equity(results, path):
@@ -196,6 +203,7 @@ def main():
     parser.add_argument("--move-data", default="data/move_daily.csv")
     parser.add_argument("--strike-step", type=float, default=1.0)
     parser.add_argument("--premium-factor", type=float, default=0.4)
+    parser.add_argument("--txn-cost-pct", type=float, default=0.0)
     parser.add_argument("--out-csv", default="results_us10y.csv")
     parser.add_argument("--out-png", default="equity_curve_us10y.png")
     args = parser.parse_args()
@@ -205,18 +213,19 @@ def main():
     atr = compute_atr_proxy(prices, ATR_LEN)
     signal = compute_renko_signal(dates, prices, atr)
 
-    results = run_backtest(dates, prices, moves, signal, args.strike_step, args.premium_factor)
+    results = run_backtest(dates, prices, moves, signal, args.strike_step, args.premium_factor,
+                            txn_cost_pct=args.txn_cost_pct)
     print_report(results)
 
     with open(args.out_csv, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["month", "init_date", "expiry_date", "spot0", "strike", "move0",
                     "premium_pct", "settle", "premium_income", "option_pnl", "hedge_pnl",
-                    "n_switches", "month_pnl", "equity"])
+                    "txn_cost", "n_switches", "month_pnl", "equity"])
         for r in results:
             w.writerow([r["month"], r["init_date"], r["expiry_date"], r["spot0"], r["strike"],
                         r["move0"], r["premium_pct"], r["settle"], r["premium_income"],
-                        r["option_pnl"], r["hedge_pnl"], r["n_switches"], r["month_pnl"], r["equity"]])
+                        r["option_pnl"], r["hedge_pnl"], r["txn_cost"], r["n_switches"], r["month_pnl"], r["equity"]])
 
     plot_equity(results, args.out_png)
 
