@@ -48,10 +48,20 @@ def load_ticker_monthly_returns(path):
 
 
 def main():
-    paths = sorted(glob.glob("results_*_real.csv"))
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--glob", default="results_*_real.csv")
+    parser.add_argument("--filename-re", default=r"results_(.+)_real\.csv")
+    parser.add_argument("--out-csv", default="results_combined_real_index.csv")
+    parser.add_argument("--out-png", default="equity_curve_combined_real_index.png")
+    args = parser.parse_args()
+
+    paths = sorted(glob.glob(args.glob))
+    pattern = re.compile(args.filename_re)
     ticker_monthly = {}
     for path in paths:
-        m = re.match(r"results_(.+)_real\.csv", os.path.basename(path))
+        m = pattern.match(os.path.basename(path))
         ticker = m.group(1).upper()
         ticker_monthly[ticker] = load_ticker_monthly_returns(path)
 
@@ -71,7 +81,7 @@ def main():
             "index_value": index_value,
         })
 
-    with open("results_combined_real_index.csv", "w", newline="") as f:
+    with open(args.out_csv, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["month", "n_tickers", "ew_return_pct", "index_value"])
         w.writeheader()
         for r in rows:
@@ -101,7 +111,7 @@ def main():
     plt.ylabel("Index value (base 100)")
     plt.grid(True, linewidth=0.3)
     plt.tight_layout()
-    plt.savefig("equity_curve_combined_real_index.png", dpi=130)
+    plt.savefig(args.out_png, dpi=130)
 
 
 if __name__ == "__main__":
