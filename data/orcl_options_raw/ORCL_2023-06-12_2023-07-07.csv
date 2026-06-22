@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+ORCL,116.43000030517578,2023-07-07,-987,ORCL230707P00116000,116.0,116.43000030517578,5.8,5.45,5.87,5.16,20,,,2023-06-12,25,116.43000030517578,5.8,last,entry_snapshot

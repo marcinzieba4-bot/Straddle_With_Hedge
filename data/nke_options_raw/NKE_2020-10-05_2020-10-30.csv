@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NKE,118.09062194824219,2020-10-30,-1966,NKE201030P00118000,118.0,0.87,1.09,1.12,0.87,341,214,,2020-10-05,25,118.09062194824219,0.87,last,entry_snapshot

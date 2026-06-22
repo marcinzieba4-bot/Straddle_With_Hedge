@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NFLX,519.119987487793,2021-01-22,-1884,NFLX210122P00520000,520.0,519.119987487793,24.5,24.1,24.5,24.1,3,89,,2020-12-28,25,519.119987487793,24.5,last,entry_snapshot

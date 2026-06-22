@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NKE,75.15252685546875,2025-08-01,-230,NKE250801P00075000,75.0,1.6,1.75,1.86,1.5,193,133,,2025-07-07,25,75.15252685546875,1.6,last,entry_snapshot

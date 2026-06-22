@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NOW,946.2899780273438,2025-11-21,-120,NOW251121P00945000,945.0,946.2899780273438,47.5,47.5,47.6,47,21,25,,2025-10-27,25,946.2899780273438,47.5,last,entry_snapshot

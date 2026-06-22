@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+ORCL,57.65999984741211,2020-10-02,-1995,ORCL201002P00057500,57.5,57.65999984741211,2.45,2.45,2.45,2.45,1,21,,2020-09-01,31,57.65999984741211,2.45,last,entry_snapshot

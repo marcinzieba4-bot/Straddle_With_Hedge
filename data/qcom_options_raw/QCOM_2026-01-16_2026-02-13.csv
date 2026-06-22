@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+QCOM,159.4199981689453,2026-02-13,-37,QCOM260213P00160000,160.0,159.4199981689453,6.8,6.2,6.8,6.2,48,205,,2026-01-16,28,159.4199981689453,6.8,last,entry_snapshot

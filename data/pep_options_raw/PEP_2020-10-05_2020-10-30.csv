@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+PEP,137.92999267578125,2020-10-30,-1968,PEP201030P00138000,138.0,137.92999267578125,3.38,3.35,3.52,3.35,11,30,,2020-10-05,25,137.92999267578125,3.38,last,entry_snapshot

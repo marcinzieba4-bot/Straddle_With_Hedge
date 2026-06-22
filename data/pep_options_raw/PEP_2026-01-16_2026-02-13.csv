@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+PEP,146.32000732421875,2026-02-13,-36,PEP260213P00146000,146.0,146.32000732421875,3.7,3.7,3.7,3.7,,15,,2026-01-16,28,146.32000732421875,3.7,last,entry_snapshot

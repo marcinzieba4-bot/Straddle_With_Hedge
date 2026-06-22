@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+PEP,159.74000549316406,2022-07-08,-1352,PEP220708P00160000,160.0,159.74000549316406,4.6,3.7,4.6,3.58,21,188,,2022-06-13,25,159.74000549316406,4.6,last,entry_snapshot

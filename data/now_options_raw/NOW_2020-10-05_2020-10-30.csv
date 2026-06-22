@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NOW,501.7900085449219,2020-10-30,-1968,NOW201030P00500000,500.0,501.7900085449219,31.9,31.9,31.9,31.9,,1,,2020-10-05,25,501.7900085449219,31.9,last,entry_snapshot

@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+TMO,540.0999755859375,2024-08-02,-596,TMO240802P00540000,540.0,536.2899780273438,14.04,15.4,15.4,14.04,10,7,,2024-07-05,28,540.0999755859375,14.04,last,entry_snapshot

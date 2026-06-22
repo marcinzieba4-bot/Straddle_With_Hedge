@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NKE,89.92985534667969,2023-10-27,-874,NKE231027P00090000,90.0,0.78,0.84,0.92,0.74,51,271,,2023-10-02,25,89.92985534667969,0.78,last,entry_snapshot

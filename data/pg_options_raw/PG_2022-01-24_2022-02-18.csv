@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+PG,161.3000030517578,2022-02-18,-1491,PG220218P00162500,162.5,161.3000030517578,4.5,3.1,5.62,3.1,528,,,2022-01-24,25,161.3000030517578,4.5,last,entry_snapshot

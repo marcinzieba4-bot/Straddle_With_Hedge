@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,price~,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+PG,145.19000244140625,2023-10-27,-875,PG231027P00145000,145.0,145.19000244140625,3.64,3.17,3.64,3.17,5,61,,2023-10-02,25,145.19000244140625,3.64,last,entry_snapshot

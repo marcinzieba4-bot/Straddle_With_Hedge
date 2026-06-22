@@ -1,0 +1,2 @@
+ticker,price,expiry,dte,symbol,strike,last,open,high,low,volume,open_interest,iv,observation_date,dte_at_obs,stock_price,entry_premium,price_method,data_source
+NKE,126.43196868896484,2021-03-19,-1826,NKE210319P00125000,125.0,1.51,0.8,1.51,0.75,151,,,2021-02-22,25,126.43196868896484,1.51,last,entry_snapshot
