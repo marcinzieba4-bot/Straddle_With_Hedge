@@ -74,12 +74,12 @@ def build_price_proxy(yields, duration=DURATION):
     return prices
 
 
-def premium_pct_from_move(move_value, duration=DURATION, dte_years=1 / 12):
+def premium_pct_from_move(move_value, duration=DURATION, dte_years=1 / 12, premium_factor=0.4):
     price_vol_annual = duration * (move_value / 10000.0)
-    return 0.4 * price_vol_annual * math.sqrt(dte_years)
+    return premium_factor * price_vol_annual * math.sqrt(dte_years)
 
 
-def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP):
+def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP, premium_factor=0.4):
     months = monthly_groups(dates)
     results = []
     equity = 0.0
@@ -92,7 +92,7 @@ def run_backtest(dates, prices, moves, signal, strike_step=STRIKE_STEP):
         i0 = idxs[0]
         spot0 = prices[i0]
         strike = nearest_strike(spot0, strike_step)
-        premium_rate = premium_pct_from_move(moves[i0])
+        premium_rate = premium_pct_from_move(moves[i0], premium_factor=premium_factor)
 
         premium_call = premium_rate * spot0 + max(0.0, spot0 - strike)
         premium_put = premium_rate * spot0 + max(0.0, strike - spot0)
@@ -195,6 +195,7 @@ def main():
     parser.add_argument("--yield-data", default="data/us10y_yield_daily.csv")
     parser.add_argument("--move-data", default="data/move_daily.csv")
     parser.add_argument("--strike-step", type=float, default=1.0)
+    parser.add_argument("--premium-factor", type=float, default=0.4)
     parser.add_argument("--out-csv", default="results_us10y.csv")
     parser.add_argument("--out-png", default="equity_curve_us10y.png")
     args = parser.parse_args()
@@ -204,7 +205,7 @@ def main():
     atr = compute_atr_proxy(prices, ATR_LEN)
     signal = compute_renko_signal(dates, prices, atr)
 
-    results = run_backtest(dates, prices, moves, signal, args.strike_step)
+    results = run_backtest(dates, prices, moves, signal, args.strike_step, args.premium_factor)
     print_report(results)
 
     with open(args.out_csv, "w", newline="") as f:
