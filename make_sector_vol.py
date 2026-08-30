@@ -73,7 +73,8 @@ def rv_series(closes):
 
 
 VALIDATED = [("XLE", "VXXLE"), ("XLV", "VXXLV"), ("XLI", "VXXLI"),
-             ("XLP", "VXXLP"), ("XLU", "VXXLU"), ("XLK", "VXXLK")]
+             ("XLP", "VXXLP"), ("XLU", "VXXLU"), ("XLK", "VXXLK"),
+             ("XLY", "VXXLY")]
 # ETFs with no CBOE index, ever (e.g. XBI): k is predicted from the fit of
 # k vs mean RV ratio across the validated sectors — flagged, second-order.
 UNVALIDATED = ["XBI"]

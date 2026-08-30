@@ -248,7 +248,26 @@ check, but XBI's premiums remain the least-grounded in the study).
   (-0.85). Sign flips across reasonable configs + the least-validated
   premium = not tradeable evidence.
 
-### Per-asset configuration without hindsight (walk-forward)
+**XLY** (validated best of all: corr 0.93, k=0.937): **the strongest
+asset in the study** — all 12 no-wing variants positive (0.34–1.91);
+ohlc/itm reaches Sharpe 1.91 (+1.75%/mo, max DD -9.5pp) and cc/itm 1.54.
+The itm/cross hysteresis suits it perfectly (45–47 flips, the fewest).
+
+### Portfolio: correlations & diversification (portfolio_corr_v3.py)
+
+Strategy-return correlations across the five surviving assets under ONE
+uniform config (cc/itm/no wings — nothing per-asset-tuned), 42 months:
+
+- Average pairwise correlation **+0.14**; gold is slightly negative vs
+  every equity sleeve (-0.08 to -0.18); SPY–XLK highest at 0.55.
+- Equal-weight (1/5 each): **+1.03%/mo, sd 1.78, Sharpe 2.00,
+  max DD -4.6pp, worst month -4.2%, CVaR95 -3.8%** — vs best single
+  asset XLY at Sharpe 1.54 and per-asset worst months of -6% to -12.5%.
+  The combination beats every component on every risk metric.
+- Caveats: the five assets are survivors of a 15-asset screen (selection
+  bias flatters the combined Sharpe); all sleeves are short unhedged-tail
+  vol, so in a real vol shock (none in 2023–2026) these correlations
+  would converge toward 1 and the -4.2% worst month would not hold.
 
 `adaptive_config_v3.py` asks whether each asset's "best" grid variant was
 learnable in real time: every month it trades the config (out of
