@@ -78,3 +78,40 @@ Outputs a `--out-csv` (per-month P&L breakdown) and `--out-png`
 This is a simplified, fixed-premium model (not real options market prices)
 intended to illustrate the hedge-switching mechanics, not as a production
 P&L estimate.
+
+## v3 (realistic conditions) — now including SPY
+
+`backtest_v3.py` reprices the straddle off an implied-vol index at each
+month's initiation (Black-Scholes ATM approximation), applies 90%/110%
+bid/ask marks, per-fill fees, and next-open hedge fills, and sweeps a grid
+of variants (ATR source × flip rule × optional long wings). For crypto the
+vol index is Deribit DVOL; for SPY it is the **CBOE VIX** (same convention:
+30-day IV, annualized %), fetched by `fetch_vix.py` into
+`data/vix_daily.csv`. SPY OHLC comes from `fetch_ohlc.py` into
+`data/spy_ohlc.csv` (both pinned in `data/` for reproducibility).
+
+The SPY hedge is 1 unit of an **ES/MES index future** (delta ≈ SPY x 10
+per MES; the model works in 1-SPY-share units). Costs differ from the
+crypto perp: ~1bp per fill covers commission + half-spread + slippage, and
+there is **no funding drag** — cost of carry sits in the futures basis and
+roughly nets out for a hedge that flips long/short (`SPY_COSTS` in
+`backtest_v3.py`; crypto keeps 5bp fills + 0.5bp/day funding).
+
+```
+python3 fetch_ohlc.py && python3 fetch_vix.py
+python3 backtest_v3.py   # prints the grid for ETHUSD, BTCUSD, SPY
+```
+
+**SPY v3 snapshot (42 months, 2023-01 → 2026-06, 1-share units):**
+
+- Headline variant `ohlc / entry / no wings` (true-range ATR,
+  break-even-hysteresis flip, dumped to `results_spy_v3.csv`):
+  27/42 winning months, +0.71%/mo avg, sd 2.82, **Sharpe 0.87**,
+  max DD -8.9pp, worst month -6.7%, total +29.7pp (~$155 per share unit).
+- Best variant on this window is `cc / flip / no wings`: +0.99%/mo,
+  **Sharpe 1.26**, max DD -10.2pp.
+- Long wings (0.15/0.20-delta put+call) cut SPY returns to ~0 — with VIX
+  this low, the 110%-of-mark wing cost eats most of the straddle premium.
+- Unlike ETH (which degrades to ~0 Sharpe under v3 realism), SPY stays
+  positive across all no-wing variants (Sharpe 0.74–1.26): lower vol means
+  fewer Renko whipsaws and far cheaper hedge fills relative to premium.

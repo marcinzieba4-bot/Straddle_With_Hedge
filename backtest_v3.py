@@ -128,7 +128,8 @@ def delta_strike(S, sigma, T, target_delta, kind, step):
 
 
 def run_month(idxs, dates, opens, closes, signal, dvol, strike_step,
-              rule, wing_delta):
+              rule, wing_delta, fut_fee_bps=FUT_FEE_BPS,
+              opt_fee_bps=OPT_FEE_BPS, funding_bps=FUNDING_BPS_PER_DAY):
     i0 = idxs[0]
     spot0 = closes[i0]
     strike = nearest_strike(spot0, strike_step)
@@ -144,7 +145,7 @@ def run_month(idxs, dates, opens, closes, signal, dvol, strike_step,
     per_side_mark = (1.0 / math.sqrt(2.0 * math.pi)) * sigma * math.sqrt(T) * spot0
     premium_income = (2 * SHORT_MARK_FRAC * per_side_mark
                       + max(0.0, spot0 - strike) + max(0.0, strike - spot0))
-    fees = 2 * (OPT_FEE_BPS / 1e4) * spot0
+    fees = 2 * (opt_fee_bps / 1e4) * spot0
 
     # long wings at 110% of mark
     wing_cost = 0.0
@@ -154,7 +155,7 @@ def run_month(idxs, dates, opens, closes, signal, dvol, strike_step,
         put_wing = delta_strike(spot0, sigma, T, wing_delta, "p", strike_step)
         wing_cost = LONG_MARK_FRAC * (bs_price(spot0, call_wing, sigma, T, "c")
                                       + bs_price(spot0, put_wing, sigma, T, "p"))
-        fees += 2 * (OPT_FEE_BPS / 1e4) * spot0
+        fees += 2 * (opt_fee_bps / 1e4) * spot0
 
     # hedge: direction decided on close, filled at NEXT open
     hedge_dir = signal[i0]
@@ -164,7 +165,7 @@ def run_month(idxs, dates, opens, closes, signal, dvol, strike_step,
         hedge_entry = spot0
     hedge_pnl = 0.0
     n_switches = 0
-    fees += (FUT_FEE_BPS / 1e4) * hedge_entry
+    fees += (fut_fee_bps / 1e4) * hedge_entry
 
     for i in idxs[1:]:
         price, sig = closes[i], signal[i]
@@ -189,12 +190,12 @@ def run_month(idxs, dates, opens, closes, signal, dvol, strike_step,
             hedge_dir = sig
             hedge_entry = fill
             n_switches += 1
-            fees += 2 * (FUT_FEE_BPS / 1e4) * fill
+            fees += 2 * (fut_fee_bps / 1e4) * fill
 
     settle = closes[idxs[-1]]
     hedge_pnl += hedge_dir * (settle - hedge_entry)
-    fees += (FUT_FEE_BPS / 1e4) * settle
-    fees += (FUNDING_BPS_PER_DAY / 1e4) * spot0 * days_T
+    fees += (fut_fee_bps / 1e4) * settle
+    fees += (funding_bps / 1e4) * spot0 * days_T
 
     option_pnl = (premium_income
                   - max(0.0, settle - strike)
@@ -214,7 +215,7 @@ def run_month(idxs, dates, opens, closes, signal, dvol, strike_step,
 
 
 def run_variant(dates, opens, highs, lows, closes, dvol, strike_step,
-                atr_source, rule, wing_delta):
+                atr_source, rule, wing_delta, **costs):
     atr = compute_atr(closes, highs, lows, source=atr_source)
     signal = compute_renko_signal(closes, atr)
     results = []
@@ -223,7 +224,7 @@ def run_variant(dates, opens, highs, lows, closes, dvol, strike_step,
         if len(idxs) < 2:
             continue
         r = run_month(idxs, dates, opens, closes, signal, dvol, strike_step,
-                      rule, wing_delta)
+                      rule, wing_delta, **costs)
         if r:
             results.append(r)
     return results
@@ -246,10 +247,20 @@ def stats(results):
             "switches": sum(r["n_switches"] for r in results)}
 
 
+CRYPTO_COSTS = dict(fut_fee_bps=FUT_FEE_BPS, opt_fee_bps=OPT_FEE_BPS,
+                    funding_bps=FUNDING_BPS_PER_DAY)
+# SPY hedged with ES/MES index futures: ~1bp per fill covers commission +
+# half-spread + slippage; no perp funding (carry sits in the futures basis
+# and roughly nets out for a hedge that flips long/short). Options on SPY
+# are penny-wide ATM, so 1bp of spot per leg on top of the 90/110% marks.
+SPY_COSTS = dict(fut_fee_bps=1.0, opt_fee_bps=1.0, funding_bps=0.0)
+
+
 if __name__ == "__main__":
-    for name, ohlc_csv, dvol_csv, step in [
-            ("ETHUSD", "data/eth_ohlc.csv", "data/dvol_eth.csv", 50),
-            ("BTCUSD", "data/btc_ohlc.csv", "data/dvol_btc.csv", 500)]:
+    for name, ohlc_csv, dvol_csv, step, costs in [
+            ("ETHUSD", "data/eth_ohlc.csv", "data/dvol_eth.csv", 50, CRYPTO_COSTS),
+            ("BTCUSD", "data/btc_ohlc.csv", "data/dvol_btc.csv", 500, CRYPTO_COSTS),
+            ("SPY", "data/spy_ohlc.csv", "data/vix_daily.csv", 1, SPY_COSTS)]:
         dates, opens, highs, lows, closes = load_ohlc(ohlc_csv)
         dvol = load_dvol(dvol_csv)
         print(f"\n=== {name} === (all realistic: 90/110% marks, fees, funding, next-open fills)")
@@ -259,10 +270,22 @@ if __name__ == "__main__":
             for rule in ("flip", "cross", "itm", "entry"):
                 for wing in (None, 0.20, 0.15):
                     res = run_variant(dates, opens, highs, lows, closes, dvol,
-                                      step, atr_source, rule, wing)
+                                      step, atr_source, rule, wing, **costs)
                     s = stats(res)
                     wl = f"{wing:.2f}" if wing else "none"
                     print(f"{atr_source:5} {rule:6} {wl:5} {s['win']:5.0f} "
                           f"{s['mean']:+8.2f} {s['sd']:6.2f} {s['sharpe']:7.2f} "
                           f"{s['mdd']:7.1f} {s['worst']:+7.1f} {s['total']:+8.1f} "
                           f"{s['switches']:6d}")
+        if name == "SPY":
+            res = run_variant(dates, opens, highs, lows, closes, dvol, step,
+                              "ohlc", "entry", None, **costs)
+            with open("results_spy_v3.csv", "w", newline="") as f:
+                w = csv.writer(f)
+                cols = ["month", "spot0", "strike", "settle", "option_pnl",
+                        "wing_pnl", "hedge_pnl", "fees", "n_switches",
+                        "month_pnl", "ret_pct"]
+                w.writerow(cols)
+                for r in res:
+                    w.writerow([r["month"]] + [round(r[c], 4) if isinstance(r[c], float)
+                                               else r[c] for c in cols[1:]])

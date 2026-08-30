@@ -1,10 +1,10 @@
-"""Fetch ETH-USD and BTC-USD daily OHLC from Yahoo Finance into
-data/{eth,btc}_ohlc.csv, used by backtest_v3.py."""
+"""Fetch ETH-USD, BTC-USD and SPY daily OHLC from Yahoo Finance into
+data/{eth,btc,spy}_ohlc.csv, used by backtest_v3.py."""
 import json
 import datetime
 import urllib.request
 
-for sym, name in [("ETH-USD", "eth"), ("BTC-USD", "btc")]:
+for sym, name in [("ETH-USD", "eth"), ("BTC-USD", "btc"), ("SPY", "spy")]:
     url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?"
            f"period1=1672531200&period2=1782086400&interval=1d")
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
