@@ -72,44 +72,75 @@ def rv_series(closes):
     return rv
 
 
+VALIDATED = [("XLE", "VXXLE"), ("XLV", "VXXLV"), ("XLI", "VXXLI"),
+             ("XLP", "VXXLP"), ("XLU", "VXXLU"), ("XLK", "VXXLK")]
+# ETFs with no CBOE index, ever (e.g. XBI): k is predicted from the fit of
+# k vs mean RV ratio across the validated sectors — flagged, second-order.
+UNVALIDATED = ["XBI"]
+FIT_WINDOW = (datetime.date(2020, 11, 27), datetime.date(2022, 11, 7))
+
+
+def write_proxy(sym, proxy, k):
+    with open(f"data/{sym.lower()}_ivproxy.csv", "w") as f:
+        f.write("date,dvol_close\n")
+        n = 0
+        for day in sorted(proxy):
+            if day >= datetime.date(2023, 1, 1):
+                f.write(f"{day},{proxy[day] * k:.4f}\n")
+                n += 1
+    print(f"{sym}: {n} proxy rows written for 2023+ (k={k:.3f})")
+
+
 if __name__ == "__main__":
     spy = yahoo_closes("SPY")
     vix = yahoo_closes("%5EVIX")
     rv_spy = rv_series(spy)
 
-    for sym, idx in [("XLE", "VXXLE"), ("XLV", "VXXLV"), ("XLI", "VXXLI"),
-                     ("XLP", "VXXLP"), ("XLU", "VXXLU")]:
-        etf = yahoo_closes(sym)
-        rv_etf = rv_series(etf)
-        proxy = {}
-        for day in sorted(rv_etf):
-            if day in rv_spy and day in vix and rv_spy[day] > 0:
-                proxy[day] = vix[day] * rv_etf[day] / rv_spy[day]
+    def raw_proxy(sym):
+        rv_etf = rv_series(yahoo_closes(sym))
+        return {d: vix[d] * rv_etf[d] / rv_spy[d]
+                for d in sorted(rv_etf)
+                if d in rv_spy and d in vix and rv_spy[d] > 0}, rv_etf
 
+    fit_pts = []
+    for sym, idx in VALIDATED:
+        proxy, rv_etf = raw_proxy(sym)
         real = cboe_closes(idx)
         overlap = sorted(set(proxy) & set(real))
-        k = 1.0
-        if overlap:
-            diffs = [proxy[d] - real[d] for d in overlap]
-            bias = sum(diffs) / len(diffs)
-            mae = sum(abs(x) for x in diffs) / len(diffs)
-            mp = sum(proxy[d] for d in overlap) / len(overlap)
-            mr = sum(real[d] for d in overlap) / len(overlap)
-            num = sum((proxy[d] - mp) * (real[d] - mr) for d in overlap)
-            den = math.sqrt(sum((proxy[d] - mp) ** 2 for d in overlap)
-                            * sum((real[d] - mr) ** 2 for d in overlap))
-            k = sum(real[d] / proxy[d] for d in overlap) / len(overlap)
-            print(f"{sym}: validation vs {idx} on {len(overlap)} days "
-                  f"({overlap[0]} -> {overlap[-1]}): real mean {mr:.1f}, "
-                  f"proxy mean {mp:.1f}, bias {bias:+.1f} vol pts, "
-                  f"MAE {mae:.1f}, corr {num/den:.2f}, calib k={k:.3f}")
-        proxy = {d: v * k for d, v in proxy.items()}
+        diffs = [proxy[d] - real[d] for d in overlap]
+        mp = sum(proxy[d] for d in overlap) / len(overlap)
+        mr = sum(real[d] for d in overlap) / len(overlap)
+        num = sum((proxy[d] - mp) * (real[d] - mr) for d in overlap)
+        den = math.sqrt(sum((proxy[d] - mp) ** 2 for d in overlap)
+                        * sum((real[d] - mr) ** 2 for d in overlap))
+        k = sum(real[d] / proxy[d] for d in overlap) / len(overlap)
+        ratio = (sum(rv_etf[d] / rv_spy[d] for d in overlap
+                     if d in rv_spy and rv_spy[d] > 0) / len(overlap))
+        fit_pts.append((ratio, k))
+        print(f"{sym}: validation vs {idx} on {len(overlap)} days "
+              f"({overlap[0]} -> {overlap[-1]}): real mean {mr:.1f}, "
+              f"proxy mean {mp:.1f}, bias {sum(diffs)/len(diffs):+.1f} "
+              f"vol pts, MAE {sum(abs(x) for x in diffs)/len(diffs):.1f}, "
+              f"corr {num/den:.2f}, RV ratio {ratio:.2f}, calib k={k:.3f}")
+        write_proxy(sym, proxy, k)
 
-        with open(f"data/{sym.lower()}_ivproxy.csv", "w") as f:
-            f.write("date,dvol_close\n")
-            n = 0
-            for day in sorted(proxy):
-                if day >= datetime.date(2023, 1, 1):
-                    f.write(f"{day},{proxy[day]:.4f}\n")
-                    n += 1
-        print(f"{sym}: {n} proxy rows written for 2023+")
+    # least-squares fit k = a + b * ratio over the validated sectors
+    n = len(fit_pts)
+    mx = sum(r for r, _ in fit_pts) / n
+    my = sum(k for _, k in fit_pts) / n
+    b = (sum((r - mx) * (k - my) for r, k in fit_pts)
+         / sum((r - mx) ** 2 for r, _ in fit_pts))
+    a = my - b * mx
+    print(f"k-vs-ratio fit over {n} validated sectors: k = {a:.3f} "
+          f"{b:+.3f} * ratio")
+
+    for sym in UNVALIDATED:
+        proxy, rv_etf = raw_proxy(sym)
+        days = [d for d in rv_etf
+                if FIT_WINDOW[0] <= d <= FIT_WINDOW[1]
+                and d in rv_spy and rv_spy[d] > 0]
+        ratio = sum(rv_etf[d] / rv_spy[d] for d in days) / len(days)
+        k = a + b * ratio
+        print(f"{sym}: NO real index — k predicted from fit at "
+              f"RV ratio {ratio:.2f}")
+        write_proxy(sym, proxy, k)

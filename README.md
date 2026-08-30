@@ -230,6 +230,24 @@ variants:**
   premium-to-chop ratio in this window. Treat the sector family as:
   SPY ≈ XLV > XLU ≈ XLI (flat) > XLE ≈ XLP (negative).
 
+**XLK / XBI**: XLK validates best of all sectors (corr 0.89, k=0.90
+measured vs VXXLK). XBI never had a CBOE index, so its k is *predicted*
+from the least-squares fit of k vs RV ratio across the six validated
+sectors (`k = 1.100 - 0.136 x ratio` → 0.797 at XBI's 2.23 — almost
+exactly XLE's independently measured 0.787 at 2.30, a good consistency
+check, but XBI's premiums remain the least-grounded in the study).
+
+- **XLK is positive in all 12 no-wing variants** (0.08–1.19) — the
+  third asset after SPY and XLV to pass the everything-agrees test —
+  but with a gold-like tilt: cc variants (Sharpe 1.0–1.2) far outrun
+  ohlc (0.1–0.6), i.e. a large share of the P&L is the small-brick
+  hedge riding the 2023–2026 AI uptrend rather than pure premium
+  capture. Robust sign, trend-flattered magnitude.
+- **XBI is fragile**: cc/flip and cc/entry earn Sharpe ~0.8, but
+  cross-rule and most ohlc variants are flat to badly negative
+  (-0.85). Sign flips across reasonable configs + the least-validated
+  premium = not tradeable evidence.
+
 ### Per-asset configuration without hindsight (walk-forward)
 
 `adaptive_config_v3.py` asks whether each asset's "best" grid variant was
