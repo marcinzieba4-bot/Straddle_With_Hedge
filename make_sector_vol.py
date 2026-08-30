@@ -77,7 +77,8 @@ if __name__ == "__main__":
     vix = yahoo_closes("%5EVIX")
     rv_spy = rv_series(spy)
 
-    for sym, idx in [("XLE", "VXXLE"), ("XLV", "VXXLV"), ("XLI", "VXXLI")]:
+    for sym, idx in [("XLE", "VXXLE"), ("XLV", "VXXLV"), ("XLI", "VXXLI"),
+                     ("XLP", "VXXLP"), ("XLU", "VXXLU")]:
         etf = yahoo_closes(sym)
         rv_etf = rv_series(etf)
         proxy = {}

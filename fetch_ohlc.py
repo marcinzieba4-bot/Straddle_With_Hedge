@@ -7,7 +7,8 @@ import urllib.request
 
 for sym, name in [("ETH-USD", "eth"), ("BTC-USD", "btc"), ("SPY", "spy"),
                   ("EURUSD=X", "eurusd"), ("GC=F", "gold"), ("CL=F", "oil"),
-                  ("XLE", "xle"), ("XLV", "xlv"), ("XLI", "xli")]:
+                  ("XLE", "xle"), ("XLV", "xlv"), ("XLI", "xli"),
+                  ("XLP", "xlp"), ("XLU", "xlu")]:
     url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?"
            f"period1=1672531200&period2=1782086400&interval=1d")
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})

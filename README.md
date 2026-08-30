@@ -216,6 +216,20 @@ variants:**
   on this evidence.
 - Wings lose on every sector ETF, as everywhere else.
 
+**XLP / XLU** (same pipeline; validation XLP bias +0.4 vol pts / corr
+0.75 / k=0.98, XLU +2.3 / 0.59 / k=0.92):
+
+- **XLP is negative in all 24 variants** (best -0.01, most -0.4 to
+  -1.2) — the worst equity underlying tested. This kills the
+  "defensive sector" reading of XLV: staples are the *most* defensive
+  sector and the strategy still loses, because XLP pairs the thinnest
+  premium (proxy IV ~13–17) with relentless small chop (57–97 flips).
+- **XLU is flat**: ohlc/cross +0.54%/mo (Sharpe 0.43) at best, cc
+  variants ~zero or negative — XLI-like, not XLV-like.
+- So XLV's edge is not "defensiveness"; it is XLV's specific
+  premium-to-chop ratio in this window. Treat the sector family as:
+  SPY ≈ XLV > XLU ≈ XLI (flat) > XLE ≈ XLP (negative).
+
 ### Per-asset configuration without hindsight (walk-forward)
 
 `adaptive_config_v3.py` asks whether each asset's "best" grid variant was
