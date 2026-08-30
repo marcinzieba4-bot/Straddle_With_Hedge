@@ -115,3 +115,23 @@ python3 backtest_v3.py   # prints the grid for ETHUSD, BTCUSD, SPY
 - Unlike ETH (which degrades to ~0 Sharpe under v3 realism), SPY stays
   positive across all no-wing variants (Sharpe 0.74–1.26): lower vol means
   fewer Renko whipsaws and far cheaper hedge fills relative to premium.
+
+### EURUSD
+
+Same pipeline, hedged with CME 6E futures (`FX_COSTS`: 0.5bp per fill,
+no funding — the EUR/USD rate differential sits in the forward points and
+largely nets out for a flipping hedge). Strike step 0.005 (6E option
+grid). Vol index: **CBOE EVZ** (EuroCurrency Volatility Index, 30-day IV,
+annualized %), fetched by `fetch_evz.py` into `data/evz_daily.csv`.
+CBOE discontinued EVZ on 2025-03-11, so the run covers **27 months,
+2023-01 → 2025-03** (months without a vol quote at initiation are
+skipped; the vol lookup tolerates up to 5 days of calendar mismatch since
+FX trades on CBOE holidays).
+
+**EURUSD v3 snapshot (27 months, 1-EUR units):** essentially flat.
+Headline `ohlc / entry / no wings` (→ `results_eurusd_v3.csv`):
+17/27 winning months, +0.09%/mo, Sharpe 0.18, worst month -5.3%.
+Best variant `cc / cross / no wings`: +0.21%/mo, Sharpe 0.63. All wing
+variants are negative. With EVZ at 7–10%, the straddle collects only
+~1.6% of spot per month, and Renko whipsaws in a ranging currency eat
+most of it — the premium-to-noise ratio that carries SPY isn't there.

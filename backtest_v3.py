@@ -26,6 +26,7 @@ Variant axes:
   turning the short straddle into put/call spreads
 """
 import csv
+import datetime
 import math
 from statistics import NormalDist
 
@@ -136,7 +137,13 @@ def run_month(idxs, dates, opens, closes, signal, dvol, strike_step,
     init_date, expiry_date = dates[i0], dates[idxs[-1]]
     days_T = max((expiry_date - init_date).days, 1)
     T = days_T / 365.0
-    sigma = dvol.get(init_date.isoformat())
+    # FX trades on days the vol index doesn't print (e.g. Jan 2); fall back
+    # to the most recent quote within 5 days. No-op when calendars align.
+    sigma = None
+    for back in range(6):
+        sigma = dvol.get((init_date - datetime.timedelta(days=back)).isoformat())
+        if sigma is not None:
+            break
     if sigma is None:
         return None
     sigma /= 100.0
@@ -254,13 +261,19 @@ CRYPTO_COSTS = dict(fut_fee_bps=FUT_FEE_BPS, opt_fee_bps=OPT_FEE_BPS,
 # and roughly nets out for a hedge that flips long/short). Options on SPY
 # are penny-wide ATM, so 1bp of spot per leg on top of the 90/110% marks.
 SPY_COSTS = dict(fut_fee_bps=1.0, opt_fee_bps=1.0, funding_bps=0.0)
+# EURUSD hedged with CME 6E futures: ~0.5 pip half-spread + fees on €125k
+# notional is ~0.5bp per fill; no funding (the EUR/USD rate differential
+# sits in the forward points and largely nets out for a flipping hedge).
+FX_COSTS = dict(fut_fee_bps=0.5, opt_fee_bps=1.0, funding_bps=0.0)
 
 
 if __name__ == "__main__":
     for name, ohlc_csv, dvol_csv, step, costs in [
             ("ETHUSD", "data/eth_ohlc.csv", "data/dvol_eth.csv", 50, CRYPTO_COSTS),
             ("BTCUSD", "data/btc_ohlc.csv", "data/dvol_btc.csv", 500, CRYPTO_COSTS),
-            ("SPY", "data/spy_ohlc.csv", "data/vix_daily.csv", 1, SPY_COSTS)]:
+            ("SPY", "data/spy_ohlc.csv", "data/vix_daily.csv", 1, SPY_COSTS),
+            ("EURUSD", "data/eurusd_ohlc.csv", "data/evz_daily.csv", 0.005,
+             FX_COSTS)]:
         dates, opens, highs, lows, closes = load_ohlc(ohlc_csv)
         dvol = load_dvol(dvol_csv)
         print(f"\n=== {name} === (all realistic: 90/110% marks, fees, funding, next-open fills)")
@@ -277,10 +290,10 @@ if __name__ == "__main__":
                           f"{s['mean']:+8.2f} {s['sd']:6.2f} {s['sharpe']:7.2f} "
                           f"{s['mdd']:7.1f} {s['worst']:+7.1f} {s['total']:+8.1f} "
                           f"{s['switches']:6d}")
-        if name == "SPY":
+        if name in ("SPY", "EURUSD"):
             res = run_variant(dates, opens, highs, lows, closes, dvol, step,
                               "ohlc", "entry", None, **costs)
-            with open("results_spy_v3.csv", "w", newline="") as f:
+            with open(f"results_{name.lower()}_v3.csv", "w", newline="") as f:
                 w = csv.writer(f)
                 cols = ["month", "spot0", "strike", "settle", "option_pnl",
                         "wing_pnl", "hedge_pnl", "fees", "n_switches",
