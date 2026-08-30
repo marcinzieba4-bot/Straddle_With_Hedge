@@ -185,3 +185,34 @@ marginal at best, with ugly tails.
   premium is fair compensation for the risk, not free income. The
   front-month series also rolls mid-month (contango/backwardation jumps
   land in the P&L as noise a real single-expiry position wouldn't see).
+
+### Per-asset configuration without hindsight (walk-forward)
+
+`adaptive_config_v3.py` asks whether each asset's "best" grid variant was
+learnable in real time: every month it trades the config (out of
+{cc,ohlc} × {flip,cross,entry}, no wings) with the best *trailing*
+12-month Sharpe for that asset — zero lookahead — and compares against
+each fixed config over the same evaluation window (2024-01 → 2026-06).
+The cc-vs-ohlc ATR axis is effectively a brick-size knob (cc ATR is
+roughly half of true-range ATR, so cc bricks are ~2x smaller).
+
+- **GOLD: the cc preference was learnable.** Walk-forward earns
+  +1.07%/mo, Sharpe 1.00 (vs 1.56 for the hindsight-best fixed cc/flip,
+  -0.09 for the headline ohlc/entry). The adaptive picker converges on
+  cc/flip within the burn-in and stays near it. Gold legitimately wants
+  small bricks + follow-every-flip: its 2024–2026 drift was persistent
+  enough that the hedge should chase every signal.
+- **OIL: no learnable config exists.** Walk-forward is *negative*
+  (-1.01%/mo, Sharpe -0.47) even though it mostly picks ohlc/flip — the
+  retrospective winner. Trailing performance simply doesn't predict
+  next-month performance for crude; the picker is always one regime
+  late. Oil's positive full-window grid rows are selection artifacts,
+  not a tradeable characteristic.
+- **SPY: robust to the choice.** Walk-forward Sharpe 1.26, within the
+  1.0–1.7 band of every decent fixed config — consistent with SPY being
+  the only asset where all no-wing variants agree.
+- Realized-price diagnostics (daily autocorrelation ~0, 20-day variance
+  ratio ~0.7 for all three) do NOT separate the assets — gold's cc edge
+  comes from multi-month drift, not daily trendiness, which is why it
+  must be learned from strategy P&L (as above) rather than read off a
+  price statistic.
