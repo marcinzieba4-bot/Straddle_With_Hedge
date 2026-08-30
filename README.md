@@ -159,3 +159,29 @@ itself.
 - A spread this wide between two ATR definitions on the same rules means
   the gold result is signal-parameter luck, not a robust edge — treat the
   cc Sharpe 1.3 as in-sample selection on a historic bull run.
+
+### OIL (WTI)
+
+Same pipeline on NYMEX front-month WTI futures (`CL=F` from Yahoo into
+`data/oil_ohlc.csv`; CL options trade on the same future). Vol index:
+**CBOE OVX** (Crude Oil Volatility Index, 30-day IV of USO options,
+annualized %), still published, pinned by `fetch_cboe_vol.py` into
+`data/ovx_daily.csv`. Hedge: CL/MCL futures (`OIL_COSTS`: 1bp per fill,
+no funding). Strike step $0.50.
+
+**OIL v3 snapshot (42 months, 2023-01 → 2026-06, 1-bbl units):**
+marginal at best, with ugly tails.
+
+- Headline `ohlc / entry / no wings` (→ `results_oil_v3.csv`): 24/42
+  winning months, +0.82%/mo, sd 6.96, Sharpe 0.41, max DD -44pp, worst
+  month -16.3%.
+- Every `cc`-ATR variant is *negative* (down to -0.7%/mo) — the exact
+  mirror image of gold, where cc won and ohlc lost. Which ATR definition
+  "works" flips per asset, i.e. neither is an edge.
+- All wing variants are negative despite OVX's 30–45 vol: crude's fat
+  tails make the wings genuinely expensive.
+- With OVX high, the straddle collects ~7–10% of spot per month — but
+  choppy trends burn 69–123 hedge flips and monthly sd is ~7%, so the
+  premium is fair compensation for the risk, not free income. The
+  front-month series also rolls mid-month (contango/backwardation jumps
+  land in the P&L as noise a real single-expiry position wouldn't see).

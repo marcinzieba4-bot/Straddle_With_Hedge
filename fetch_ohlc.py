@@ -1,12 +1,12 @@
-"""Fetch ETH-USD, BTC-USD, SPY, EURUSD and gold (COMEX GC front month)
-daily OHLC from Yahoo Finance into data/{eth,btc,spy,eurusd,gold}_ohlc.csv,
-used by backtest_v3.py."""
+"""Fetch ETH-USD, BTC-USD, SPY, EURUSD, gold (COMEX GC front month) and
+WTI crude (NYMEX CL front month) daily OHLC from Yahoo Finance into
+data/{eth,btc,spy,eurusd,gold,oil}_ohlc.csv, used by backtest_v3.py."""
 import json
 import datetime
 import urllib.request
 
 for sym, name in [("ETH-USD", "eth"), ("BTC-USD", "btc"), ("SPY", "spy"),
-                  ("EURUSD=X", "eurusd"), ("GC=F", "gold")]:
+                  ("EURUSD=X", "eurusd"), ("GC=F", "gold"), ("CL=F", "oil")]:
     url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?"
            f"period1=1672531200&period2=1782086400&interval=1d")
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})

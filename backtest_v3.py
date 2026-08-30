@@ -270,6 +270,10 @@ FX_COSTS = dict(fut_fee_bps=0.5, opt_fee_bps=1.0, funding_bps=0.0)
 # the front-month future, so carry/contango is already in the prices, and
 # GC options settle into the same future).
 GOLD_COSTS = dict(fut_fee_bps=0.5, opt_fee_bps=1.0, funding_bps=0.0)
+# WTI hedged with NYMEX CL/MCL futures: 1-tick ($0.01/bbl) half-spread on
+# ~$70/bbl is ~0.7bp, so ~1bp per fill; no funding (front-month series,
+# carry in the curve). CL options trade on the same future.
+OIL_COSTS = dict(fut_fee_bps=1.0, opt_fee_bps=1.0, funding_bps=0.0)
 
 
 if __name__ == "__main__":
@@ -280,7 +284,9 @@ if __name__ == "__main__":
             ("EURUSD", "data/eurusd_ohlc.csv", "data/evz_daily.csv", 0.005,
              FX_COSTS),
             ("GOLD", "data/gold_ohlc.csv", "data/gvz_daily.csv", 5,
-             GOLD_COSTS)]:
+             GOLD_COSTS),
+            ("OIL", "data/oil_ohlc.csv", "data/ovx_daily.csv", 0.5,
+             OIL_COSTS)]:
         dates, opens, highs, lows, closes = load_ohlc(ohlc_csv)
         dvol = load_dvol(dvol_csv)
         print(f"\n=== {name} === (all realistic: 90/110% marks, fees, funding, next-open fills)")
@@ -297,7 +303,7 @@ if __name__ == "__main__":
                           f"{s['mean']:+8.2f} {s['sd']:6.2f} {s['sharpe']:7.2f} "
                           f"{s['mdd']:7.1f} {s['worst']:+7.1f} {s['total']:+8.1f} "
                           f"{s['switches']:6d}")
-        if name in ("SPY", "EURUSD", "GOLD"):
+        if name in ("SPY", "EURUSD", "GOLD", "OIL"):
             res = run_variant(dates, opens, highs, lows, closes, dvol, step,
                               "ohlc", "entry", None, **costs)
             with open(f"results_{name.lower()}_v3.csv", "w", newline="") as f:
