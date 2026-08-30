@@ -122,7 +122,7 @@ Same pipeline, hedged with CME 6E futures (`FX_COSTS`: 0.5bp per fill,
 no funding — the EUR/USD rate differential sits in the forward points and
 largely nets out for a flipping hedge). Strike step 0.005 (6E option
 grid). Vol index: **CBOE EVZ** (EuroCurrency Volatility Index, 30-day IV,
-annualized %), fetched by `fetch_evz.py` into `data/evz_daily.csv`.
+annualized %), fetched by `fetch_cboe_vol.py` into `data/evz_daily.csv`.
 CBOE discontinued EVZ on 2025-03-11, so the run covers **27 months,
 2023-01 → 2025-03** (months without a vol quote at initiation are
 skipped; the vol lookup tolerates up to 5 days of calendar mismatch since
@@ -135,3 +135,27 @@ Best variant `cc / cross / no wings`: +0.21%/mo, Sharpe 0.63. All wing
 variants are negative. With EVZ at 7–10%, the straddle collects only
 ~1.6% of spot per month, and Renko whipsaws in a ranging currency eat
 most of it — the premium-to-noise ratio that carries SPY isn't there.
+
+### GOLD
+
+Same pipeline on COMEX front-month gold futures (`GC=F` from Yahoo into
+`data/gold_ohlc.csv`) — a clean fit, since GC options are options on that
+same future, so carry/contango is already inside the price series. Vol
+index: **CBOE GVZ** (Gold Volatility Index, 30-day IV, annualized %),
+still published, fetched by `fetch_cboe_vol.py` (which now pins both EVZ
+and GVZ) into `data/gvz_daily.csv`. Hedge: GC/MGC futures (`GOLD_COSTS`:
+0.5bp per fill, no funding). Strike step $5.
+
+**GOLD v3 snapshot (42 months, 2023-01 → 2026-06, 1-oz units):** the
+verdict depends on the ATR source, which is a robustness warning in
+itself.
+
+- Headline `ohlc / entry / no wings` (→ `results_gold_v3.csv`): flat —
+  25/42 winning months, -0.02%/mo, Sharpe -0.02, worst month -15.5%.
+- All `cc`-ATR flip/entry variants: +1.2–1.3%/mo, Sharpe ~1.3. The
+  smaller close-to-close bricks track gold's relentless 2024–2026 uptrend
+  (roughly $2,000 → $4,200), so the hedge leg captures trend; the larger
+  true-range bricks flip more (78 vs 57–62) and give it all back.
+- A spread this wide between two ATR definitions on the same rules means
+  the gold result is signal-parameter luck, not a robust edge — treat the
+  cc Sharpe 1.3 as in-sample selection on a historic bull run.

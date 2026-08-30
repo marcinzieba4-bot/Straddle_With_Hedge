@@ -265,6 +265,11 @@ SPY_COSTS = dict(fut_fee_bps=1.0, opt_fee_bps=1.0, funding_bps=0.0)
 # notional is ~0.5bp per fill; no funding (the EUR/USD rate differential
 # sits in the forward points and largely nets out for a flipping hedge).
 FX_COSTS = dict(fut_fee_bps=0.5, opt_fee_bps=1.0, funding_bps=0.0)
+# Gold hedged with COMEX GC/MGC futures: $0.10 tick on ~$3000+/oz is
+# <0.3bp half-spread, so ~0.5bp per fill; no funding (the OHLC series IS
+# the front-month future, so carry/contango is already in the prices, and
+# GC options settle into the same future).
+GOLD_COSTS = dict(fut_fee_bps=0.5, opt_fee_bps=1.0, funding_bps=0.0)
 
 
 if __name__ == "__main__":
@@ -273,7 +278,9 @@ if __name__ == "__main__":
             ("BTCUSD", "data/btc_ohlc.csv", "data/dvol_btc.csv", 500, CRYPTO_COSTS),
             ("SPY", "data/spy_ohlc.csv", "data/vix_daily.csv", 1, SPY_COSTS),
             ("EURUSD", "data/eurusd_ohlc.csv", "data/evz_daily.csv", 0.005,
-             FX_COSTS)]:
+             FX_COSTS),
+            ("GOLD", "data/gold_ohlc.csv", "data/gvz_daily.csv", 5,
+             GOLD_COSTS)]:
         dates, opens, highs, lows, closes = load_ohlc(ohlc_csv)
         dvol = load_dvol(dvol_csv)
         print(f"\n=== {name} === (all realistic: 90/110% marks, fees, funding, next-open fills)")
@@ -290,7 +297,7 @@ if __name__ == "__main__":
                           f"{s['mean']:+8.2f} {s['sd']:6.2f} {s['sharpe']:7.2f} "
                           f"{s['mdd']:7.1f} {s['worst']:+7.1f} {s['total']:+8.1f} "
                           f"{s['switches']:6d}")
-        if name in ("SPY", "EURUSD"):
+        if name in ("SPY", "EURUSD", "GOLD"):
             res = run_variant(dates, opens, highs, lows, closes, dvol, step,
                               "ohlc", "entry", None, **costs)
             with open(f"results_{name.lower()}_v3.csv", "w", newline="") as f:
