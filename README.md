@@ -186,6 +186,36 @@ marginal at best, with ugly tails.
   front-month series also rolls mid-month (contango/backwardation jumps
   land in the P&L as noise a real single-expiry position wouldn't see).
 
+### Sector ETFs: XLE / XLV / XLI
+
+CBOE's sector vol indices died before the window opens (VXXLE 2022-02,
+VXXLV/VXXLI 2022-11), so `make_sector_vol.py` builds a proxy:
+`VIX x RV63_etf / RV63_spy`, **validated against the real indices on the
+2020-2022 overlap** and calibrated with a per-ETF scale factor
+`k = mean(real/proxy)` from that overlap (pre-window data — no
+lookahead). Validation: XLV bias +0.1 vol pts / corr 0.80, XLI +0.6 /
+0.70, XLE +12 vol pts (structural — the VIX term carries SPX's variance
+premium, which the RV ratio double-counts for high-vol sectors; k=0.79
+corrects it, corr 0.55 means XLE's proxy is the least trustworthy).
+Hedge: the ETF itself (no liquid single-sector future) — `ETF_COSTS`:
+1.5bp fills, 1.5bp option legs, 0.1bp/day financing. Strike step $1.
+
+**Snapshots (42 months, 2023-01 → 2026-06, 1-share units), no-wing
+variants:**
+
+- **XLV is the second SPY**: every no-wing variant positive (Sharpe
+  0.32–1.33); the `cross` rule dominates (cc/cross +1.01%/mo, Sharpe
+  1.33, max DD -7.1pp; headline ohlc/entry +0.55%/mo, 0.52). Low-vol
+  defensive sector: few flips, premium survives.
+- **XLI is flat**: -0.14 to +0.35 Sharpe across no-wing variants —
+  premium too thin (VXXLI-proxy ~15–20) for the chop, like EURUSD.
+- **XLE is negative nearly everywhere** (best +0.06; most variants
+  -0.4 to -0.9): energy chops like crude but the ETF's premium is
+  smaller than OVX's, so there's less income against the same whipsaw.
+  Its proxy IV is also the least validated — treat XLE as untradeable
+  on this evidence.
+- Wings lose on every sector ETF, as everywhere else.
+
 ### Per-asset configuration without hindsight (walk-forward)
 
 `adaptive_config_v3.py` asks whether each asset's "best" grid variant was
